@@ -99,7 +99,7 @@ public class FuncionarioDAO {
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
@@ -125,7 +125,7 @@ public class FuncionarioDAO {
 
 			funcionarios.add(funcionario);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
@@ -135,7 +135,7 @@ public class FuncionarioDAO {
 
 	public List<Funcionario> listFuncionariosByHotel(int idHotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from funcionario WHERE hotel_id_hotel";
+		String sql = "SELECT * from funcionario WHERE hotel_id_hotel=?";
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, idHotel);
 		ResultSet rs = statement.executeQuery();
@@ -151,7 +151,7 @@ public class FuncionarioDAO {
 
 			funcionarios.add(funcionario);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();

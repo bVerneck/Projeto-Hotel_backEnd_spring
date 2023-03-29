@@ -24,18 +24,18 @@ public class ContatoDAO {
 		statement.setString(3, contato.getEmail());
 
 		statement.executeUpdate();
-		
+
 		ResultSet rs = statement.getGeneratedKeys();
-		
+
 		int ultimoId=0;
 		while(rs.next()) {
 			ultimoId=  rs.getInt(1);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
-		
+
 		return ultimoId;
 	}
 
@@ -85,7 +85,7 @@ public class ContatoDAO {
 					rs.getString("email"),
 					rs.getInt("id_contato"));
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
@@ -110,7 +110,7 @@ public class ContatoDAO {
 
 			contatos.add(contato);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();

@@ -97,7 +97,7 @@ public class ClienteDAO {
 		rs.close();
 		statement.close();
 		conexao.close();
-		
+
 		return cliente;
 	}
 
@@ -122,7 +122,7 @@ public class ClienteDAO {
 		rs.close();
 		statement.close();
 		conexao.close();
-		
+
 		return clientes;
 	}
 }

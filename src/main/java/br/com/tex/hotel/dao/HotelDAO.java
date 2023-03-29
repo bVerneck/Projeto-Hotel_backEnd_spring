@@ -80,41 +80,49 @@ public class HotelDAO {
 		Hotel hotel = null;
 
 		while (rs.next()) {
-			hotel = new Hotel(rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
+			hotel = new Hotel(rs.getInt("id_hotel"),
+					rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
 		}
 
 		return hotel;
 	}
 
-	public List<Hotel> listAllHotel() throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from hotel";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+	public List<Hotel> listAllHotel() {
+		Connection conexao;
+		try {
+			conexao = FactoryConnetion.getConnection();
+			String sql = "SELECT * from hotel";
+			PreparedStatement statement = conexao.prepareStatement(sql);
 
-		ResultSet rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
-		List<Hotel> hoteis = new ArrayList<>();
+			List<Hotel> hoteis = new ArrayList<>();
 
-		while (rs.next()) {
-			Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
-					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
-			
-			hoteis.add(hotel);
-		}
+			while (rs.next()) {
+				Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
+						new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
+						new ContatoDAO().getById(rs.getInt("contato_id_contato")));
 
-		if (hoteis != null && !hoteis.isEmpty()) {
-			for (Hotel hotel : hoteis) {
-				hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
-				hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
+				hoteis.add(hotel);
 			}
-		}
-		
-		rs.close();
-		statement.close();
-		conexao.close();
 
-		return hoteis;
+			if (hoteis != null && !hoteis.isEmpty()) {
+				for (Hotel hotel : hoteis) {
+					hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
+					hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
+				}
+			}
+
+			rs.close();
+			statement.close();
+			conexao.close();
+
+			return hoteis;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

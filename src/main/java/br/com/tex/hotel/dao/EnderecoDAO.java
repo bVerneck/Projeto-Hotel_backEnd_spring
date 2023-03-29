@@ -98,12 +98,12 @@ public class EnderecoDAO {
 		Endereco endereco = null;
 
 		while (rs.next()) {
-			endereco = new Endereco(id, TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
+			endereco = new Endereco(id, TipoLogradouro.fromDescricao(rs.getString("tipoLogradouro")),
 					rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
-					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF("estado"),
+					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF(rs.getString("estado")),
 					rs.getString("pais"));
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
@@ -129,7 +129,7 @@ public class EnderecoDAO {
 
 			enderecos.add(endereco);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();

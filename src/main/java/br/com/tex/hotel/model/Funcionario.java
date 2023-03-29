@@ -24,7 +24,7 @@ public class Funcionario {
 	}
 
 	public Funcionario(Integer matricula, String nome, String cpf, LocalDate dataNascimento, BigDecimal salario,
-			Contato contato, Endereco endereco, Hotel hotel) {
+					   Contato contato, Endereco endereco, Hotel hotel) {
 		this.matricula = matricula;
 		this.nome = nome;
 		this.cpf = cpf;
@@ -36,7 +36,7 @@ public class Funcionario {
 	}
 
 	public Funcionario(Integer id, Integer matricula, String nome, String cpf, LocalDate dataNascimento,
-			BigDecimal salario, Contato contato, Endereco endereco, Hotel hotel) {
+					   BigDecimal salario, Contato contato, Endereco endereco, Hotel hotel) {
 		this.id = id;
 		this.matricula = matricula;
 		this.nome = nome;
@@ -49,7 +49,7 @@ public class Funcionario {
 	}
 
 	public Funcionario(Integer matricula, String nome, String cpf, LocalDate dataNascimento, BigDecimal salario,
-			Contato contato, Endereco endereco) {
+					   Contato contato, Endereco endereco) {
 		super();
 		this.matricula = matricula;
 		this.nome = nome;

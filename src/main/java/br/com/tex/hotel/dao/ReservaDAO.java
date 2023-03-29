@@ -48,7 +48,7 @@ public class ReservaDAO {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "UPDATE reserva SET dataCheckin=?, dataCheckout=?, quantidadeAdulto=?, quantidadeCrianca=?,"
 				+ " acomodacao_id_acomodacao=? WHERE id_reserva=?";
-		
+
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
 		statement.setDate(1, Date.valueOf(reserva.getDataCheckIn()));
@@ -94,13 +94,13 @@ public class ReservaDAO {
 					rs.getInt("quantidadeAdulto"),
 					rs.getInt("quantidadeCrianca"),
 					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
-												
+
 		}
 
 		rs.close();
 		statement.close();
 		conexao.close();
-		
+
 		return reserva;
 	}
 
@@ -123,14 +123,14 @@ public class ReservaDAO {
 
 			reservas.add(reserva);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
 
 		return reservas;
 	}
-	
+
 	public List<Reserva> listReservasPorCliente(int idCliente) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "select r.*"
@@ -138,7 +138,7 @@ public class ReservaDAO {
 				+ " inner join reserva r "
 				+ " on c.reserva_id_reserva=r.id_reserva "
 				+ " where c.id_cliente = ?";
-		
+
 		PreparedStatement statement = conexao.prepareStatement(sql);
 		statement.setInt(1, idCliente);
 
@@ -156,7 +156,7 @@ public class ReservaDAO {
 
 			reservas.add(reserva);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
