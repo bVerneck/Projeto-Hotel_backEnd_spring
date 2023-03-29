@@ -24,7 +24,7 @@ public class Reserva {
 	}
 
 	public Reserva(LocalDate dataCheckIn, LocalDate dataCheckOut, Integer quantHospedeAdulto,
-			Integer quantHospedeAteOitoAnos, Acomodacao quarto) {
+				   Integer quantHospedeAteOitoAnos, Acomodacao quarto) {
 		this.dataCheckIn = dataCheckIn;
 		this.dataCheckOut = dataCheckOut;
 		this.quantHospedeAdulto = quantHospedeAdulto;
@@ -33,7 +33,7 @@ public class Reserva {
 	}
 
 	public Reserva(Integer id, LocalDate dataCheckIn, LocalDate dataCheckOut, Integer quantHospedeAdulto,
-			Integer quantHospedeAteOitoAnos, Acomodacao quarto) {
+				   Integer quantHospedeAteOitoAnos, Acomodacao quarto) {
 		this.id = id;
 		this.dataCheckIn = dataCheckIn;
 		this.dataCheckOut = dataCheckOut;

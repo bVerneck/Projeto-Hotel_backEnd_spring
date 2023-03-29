@@ -22,7 +22,7 @@ public class Endereco {
 	}
 
 	public Endereco(TipoLogradouro tipoLogradouro, String logradouro, Integer numeroResidencial, String complemento,
-			String cep, String bairro, String cidade, Estado estado, String pais) {
+					String cep, String bairro, String cidade, Estado estado, String pais) {
 		this.tipoLogradouro = tipoLogradouro;
 		this.logradouro = logradouro;
 		this.numeroResidencial = numeroResidencial;
@@ -35,7 +35,7 @@ public class Endereco {
 	}
 
 	public Endereco(Integer id, TipoLogradouro tipoLogradouro, String logradouro, Integer numeroResidencial,
-			String complemento, String cep, String bairro, String cidade, Estado estado, String pais) {
+					String complemento, String cep, String bairro, String cidade, Estado estado, String pais) {
 		this.id = id;
 		this.tipoLogradouro = tipoLogradouro;
 		this.logradouro = logradouro;

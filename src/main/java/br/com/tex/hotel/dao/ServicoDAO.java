@@ -27,11 +27,11 @@ public class ServicoDAO {
 		statement.executeUpdate();
 		ResultSet rs = statement.getGeneratedKeys();
 		int id = 0;
-		
+
 		while (rs.next()) {
 			id = rs.getInt(1);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
@@ -47,7 +47,7 @@ public class ServicoDAO {
 		statement.setString(1, servico.getDescricao());
 		statement.setBigDecimal(2, servico.getPreco());
 		statement.setInt(3, servico.getId());
-		
+
 		statement.execute();
 
 		statement.close();
@@ -68,7 +68,7 @@ public class ServicoDAO {
 			servico = new Servico(rs.getInt("id_servico"), rs.getString("descricao"), rs.getBigDecimal("preco"),
 					rs.getInt("hotel_id_hotel"), rs.getInt("reserva_id_reserva"));
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
@@ -99,6 +99,20 @@ public class ServicoDAO {
 		return servicos;
 	}
 
+	public void excluirServico(Integer id) throws SQLException {
+		Connection connection = FactoryConnetion.getConnection();
+		String sql = "delete from servico where id_servico=?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setInt(1, id);
+
+		statement.execute();
+
+		statement.close();
+		connection.close();
+
+		System.out.println("Excluído com sucesso!");
+	}
+
 	public List<Servico> listAllServico() throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "SELECT * from servico";
@@ -113,12 +127,11 @@ public class ServicoDAO {
 
 			servicos.add(servico);
 		}
-		
+
 		rs.close();
 		statement.close();
 		conexao.close();
 
 		return servicos;
 	}
-
 }

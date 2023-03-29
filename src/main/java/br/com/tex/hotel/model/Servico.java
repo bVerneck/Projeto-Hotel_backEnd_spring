@@ -60,6 +60,14 @@ public class Servico {
 		return reserva_id_reserva;
 	}
 
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -81,5 +89,4 @@ public class Servico {
 	public String toString() {
 		return "Servico [id=" + id + ", descricao=" + descricao + ", preco=" + preco + "]";
 	}
-
 }

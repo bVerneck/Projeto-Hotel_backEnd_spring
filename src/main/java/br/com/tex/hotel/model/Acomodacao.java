@@ -21,7 +21,7 @@ public class Acomodacao {
 	}
 
 	public Acomodacao(String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca, boolean quartoLivre,
-			BigDecimal tamanhoQuarto, Hotel hotel) {
+					  BigDecimal tamanhoQuarto, Hotel hotel) {
 		this.nomeAcomodacao = nomeAcomodacao;
 		this.valorAdulto = valorAdulto;
 		this.valorCrianca = valorCrianca;
@@ -31,7 +31,7 @@ public class Acomodacao {
 	}
 
 	public Acomodacao(String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca, boolean quartoLivre,
-			BigDecimal tamanhoQuarto) {
+					  BigDecimal tamanhoQuarto) {
 		this.nomeAcomodacao = nomeAcomodacao;
 		this.valorAdulto = valorAdulto;
 		this.valorCrianca = valorCrianca;
@@ -40,7 +40,7 @@ public class Acomodacao {
 	}
 
 	public Acomodacao(Integer id, String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca,
-			boolean quartoLivre, BigDecimal tamanhoQuarto, Hotel hotel) {
+					  boolean quartoLivre, BigDecimal tamanhoQuarto, Hotel hotel) {
 		this.id = id;
 		this.nomeAcomodacao = nomeAcomodacao;
 		this.valorAdulto = valorAdulto;
