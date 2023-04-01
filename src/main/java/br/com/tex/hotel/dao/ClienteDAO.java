@@ -11,7 +11,9 @@ import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.model.Cliente;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ClienteDAO {
 
 	public Integer inserir(Cliente cliente) throws SQLException {
@@ -101,27 +103,31 @@ public class ClienteDAO {
 		return cliente;
 	}
 
-	public List<Cliente> listAllFuncionario() throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from cliente";
-		PreparedStatement statement = conexao.prepareStatement(sql);
-
-		ResultSet rs = statement.executeQuery();
-
+	public List<Cliente> listAllCliente() {
 		List<Cliente> clientes = new ArrayList<>();
+		try{
+			Connection conexao = FactoryConnetion.getConnection();
+			String sql = "SELECT * from cliente";
+			PreparedStatement statement = conexao.prepareStatement(sql);
 
-		while (rs.next()) {
-			Cliente cliente = new Cliente(rs.getInt("id_cliente"), rs.getString("nome"), rs.getString("cpf"),
-					rs.getDate("dataNascimento").toLocalDate(),
-					new ContatoDAO().getById(rs.getInt("contato_id_contato")),
-					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")));
+			ResultSet rs = statement.executeQuery();
 
-			clientes.add(cliente);
+
+			while (rs.next()) {
+				Cliente cliente = new Cliente(rs.getInt("id_cliente"), rs.getString("nome"), rs.getString("cpf"),
+						rs.getDate("dataNascimento").toLocalDate(),
+						new ContatoDAO().getById(rs.getInt("contato_id_contato")),
+						new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")));
+
+				clientes.add(cliente);
+			}
+
+			rs.close();
+			statement.close();
+			conexao.close();
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-
-		rs.close();
-		statement.close();
-		conexao.close();
 
 		return clientes;
 	}
