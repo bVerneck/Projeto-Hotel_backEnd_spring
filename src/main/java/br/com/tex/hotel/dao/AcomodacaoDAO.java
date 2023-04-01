@@ -10,7 +10,9 @@ import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.model.Acomodacao;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class AcomodacaoDAO {
 
 	public Integer inserir(Acomodacao acomodacao) throws SQLException {
