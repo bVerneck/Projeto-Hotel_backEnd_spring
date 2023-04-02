@@ -10,33 +10,40 @@ import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.model.Contato;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ContatoDAO {
 
-	public Integer inserir(Contato contato) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
+	public Integer inserir(Contato contato) {
+		try {
+			Connection conexao = FactoryConnetion.getConnection();
 
-		String sql = "INSERT INTO contato (telefonePrincipal, telefoneAuxiliar, email) VALUES(?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			String sql = "INSERT INTO contato (telefonePrincipal, telefoneAuxiliar, email) VALUES(?, ?, ?)";
+			PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-		statement.setString(1, contato.getTelefonePrincipal());
-		statement.setString(2, contato.getTelefoneAuxiliar());
-		statement.setString(3, contato.getEmail());
+			statement.setString(1, contato.getTelefonePrincipal());
+			statement.setString(2, contato.getTelefoneAuxiliar());
+			statement.setString(3, contato.getEmail());
 
-		statement.executeUpdate();
+			statement.executeUpdate();
 
-		ResultSet rs = statement.getGeneratedKeys();
+			ResultSet rs = statement.getGeneratedKeys();
 
-		int ultimoId=0;
-		while(rs.next()) {
-			ultimoId=  rs.getInt(1);
+			int ultimoId = 0;
+			while (rs.next()) {
+				ultimoId = rs.getInt(1);
+			}
+
+			rs.close();
+			statement.close();
+			conexao.close();
+
+			return ultimoId;
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
 		}
-
-		rs.close();
-		statement.close();
-		conexao.close();
-
-		return ultimoId;
 	}
 
 	public void alterar(Contato contato) throws SQLException {

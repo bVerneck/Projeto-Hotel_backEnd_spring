@@ -26,6 +26,10 @@ public class Hotel {
 		this.contato = contato;
 	}
 
+	public Hotel(String nome) {
+		this.nome = nome;
+	}
+
 	public Hotel(Integer id, String nome, Endereco endereco, Contato contato) {
 		this.id = id;
 		this.nome = nome;
@@ -93,6 +97,14 @@ public class Hotel {
 
 	public Contato getContato() {
 		return contato;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public void setContato(Contato contato) {
+		this.contato = contato;
 	}
 
 	@Override
