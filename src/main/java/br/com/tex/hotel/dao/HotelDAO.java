@@ -10,119 +10,127 @@ import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.model.Hotel;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class HotelDAO {
 
-	public Integer inserir(Hotel hotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
+    public Integer inserir(Hotel hotel) {
+        try {
+            Connection conexao = FactoryConnetion.getConnection();
 
-		String sql = "INSERT INTO hotel (nome, contato_id_contato, endereco_id_endereco) VALUES(?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            String sql = "INSERT INTO hotel (nome, contato_id_contato, endereco_id_endereco) VALUES(?, ?, ?)";
+            PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-		statement.setString(1, hotel.getNome());
-		statement.setInt(2, hotel.getContato().getId());
-		statement.setInt(3, hotel.getEndereco().getId());
+            statement.setString(1, hotel.getNome());
+            statement.setInt(2, hotel.getContato().getId());
+            statement.setInt(3, hotel.getEndereco().getId());
 
-		statement.executeUpdate();
+            statement.executeUpdate();
 
-		ResultSet rs = statement.getGeneratedKeys();
+            ResultSet rs = statement.getGeneratedKeys();
 
-		int ultimoId = 0;
-		while (rs.next()) {
-			ultimoId = rs.getInt(1);
-		}
+            int ultimoId = 0;
+            while (rs.next()) {
+                ultimoId = rs.getInt(1);
+            }
 
-		rs.close();
-		statement.close();
-		conexao.close();
+            rs.close();
+            statement.close();
+            conexao.close();
 
-		return ultimoId;
-	}
+            return ultimoId;
 
-	public void alterar(Hotel hotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "UPDATE hotel SET nome=?, contato_id_contato=?, endereco_id_endereco=? WHERE id_hotel=?";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-		PreparedStatement statement = conexao.prepareStatement(sql);
+    public void alterar(Hotel hotel) throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
+        String sql = "UPDATE hotel SET nome=?, contato_id_contato=?, endereco_id_endereco=? WHERE id_hotel=?";
 
-		statement.setString(1, hotel.getNome());
-		statement.setInt(2, hotel.getContato().getId());
-		statement.setInt(3, hotel.getEndereco().getId());
-		statement.setInt(4, hotel.getId());
+        PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.execute();
+        statement.setString(1, hotel.getNome());
+        statement.setInt(2, hotel.getContato().getId());
+        statement.setInt(3, hotel.getEndereco().getId());
+        statement.setInt(4, hotel.getId());
 
-		statement.close();
-		conexao.close();
-	}
+        statement.execute();
 
-	public void delete(Hotel hotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "DELETE FROM hotel WHERE id_hotel=?";
+        statement.close();
+        conexao.close();
+    }
 
-		PreparedStatement statement = conexao.prepareStatement(sql);
+    public void delete(Hotel hotel) throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
+        String sql = "DELETE FROM hotel WHERE id_hotel=?";
 
-		statement.setInt(1, hotel.getId());
-		statement.execute();
+        PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.close();
-		conexao.close();
-	}
+        statement.setInt(1, hotel.getId());
+        statement.execute();
 
-	public Hotel getById(Integer id) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from hotel WHERE id_hotel=?";
-		PreparedStatement statement = conexao.prepareStatement(sql);
-		statement.setInt(1, id);
+        statement.close();
+        conexao.close();
+    }
 
-		ResultSet rs = statement.executeQuery();
+    public Hotel getById(Integer id) throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
+        String sql = "SELECT * from hotel WHERE id_hotel=?";
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, id);
 
-		Hotel hotel = null;
+        ResultSet rs = statement.executeQuery();
 
-		while (rs.next()) {
-			hotel = new Hotel(rs.getInt("id_hotel"),
-					rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
-		}
+        Hotel hotel = null;
 
-		return hotel;
-	}
+        while (rs.next()) {
+            hotel = new Hotel(rs.getInt("id_hotel"),
+                    rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
+                    new ContatoDAO().getById(rs.getInt("contato_id_contato")));
+        }
 
-	public List<Hotel> listAllHotel() {
-		Connection conexao;
-		try {
-			conexao = FactoryConnetion.getConnection();
-			String sql = "SELECT * from hotel";
-			PreparedStatement statement = conexao.prepareStatement(sql);
+        return hotel;
+    }
 
-			ResultSet rs = statement.executeQuery();
+    public List<Hotel> listAllHotel() {
+        Connection conexao;
+        try {
+            conexao = FactoryConnetion.getConnection();
+            String sql = "SELECT * from hotel";
+            PreparedStatement statement = conexao.prepareStatement(sql);
 
-			List<Hotel> hoteis = new ArrayList<>();
+            ResultSet rs = statement.executeQuery();
 
-			while (rs.next()) {
-				Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
-						new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-						new ContatoDAO().getById(rs.getInt("contato_id_contato")));
+            List<Hotel> hoteis = new ArrayList<>();
 
-				hoteis.add(hotel);
-			}
+            while (rs.next()) {
+                Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
+                        new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
+                        new ContatoDAO().getById(rs.getInt("contato_id_contato")));
 
-			if (hoteis != null && !hoteis.isEmpty()) {
-				for (Hotel hotel : hoteis) {
-					hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
-					hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
-				}
-			}
+                hoteis.add(hotel);
+            }
 
-			rs.close();
-			statement.close();
-			conexao.close();
+            if (hoteis != null && !hoteis.isEmpty()) {
+                for (Hotel hotel : hoteis) {
+                    hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
+                    hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
+                }
+            }
 
-			return hoteis;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            rs.close();
+            statement.close();
+            conexao.close();
 
-		return null;
-	}
+            return hoteis;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
