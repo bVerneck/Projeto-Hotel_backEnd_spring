@@ -48,15 +48,8 @@ public class HotelController {
 
     @PostMapping("/cadastra")
     public String cadstra(HotelInputDTO hotelInputDTO){
-        Contato contatoHotel = hotelInputDTO.contatoHotel(hotelInputDTO);
-        Endereco enderecoHotel = hotelInputDTO.enderecoHotel(hotelInputDTO);
 
-        Hotel hotel = hotelInputDTO.toHotel(hotelInputDTO);
-        hotel.setContato(contatoHotel);
-        hotel.setEndereco(enderecoHotel);
-
-        hotelDAO.inserir(hotel);
-
+        hotelDAO.inserir(hotelInputDTO.toHotel(hotelInputDTO));
         return "redirect:/hotel/lista";
     }
 
