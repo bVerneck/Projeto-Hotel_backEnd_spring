@@ -10,41 +10,20 @@ import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.model.Hotel;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class HotelDAO {
 
-    public Integer inserir(Hotel hotel) {
-        try {
-            Connection conexao = FactoryConnetion.getConnection();
+    @PersistenceContext
+    private EntityManager entityManager;
 
-            String sql = "INSERT INTO hotel (nome, contato_id_contato, endereco_id_endereco) VALUES(?, ?, ?)";
-            PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            statement.setString(1, hotel.getNome());
-            statement.setInt(2, hotel.getContato().getId());
-            statement.setInt(3, hotel.getEndereco().getId());
-
-            statement.executeUpdate();
-
-            ResultSet rs = statement.getGeneratedKeys();
-
-            int ultimoId = 0;
-            while (rs.next()) {
-                ultimoId = rs.getInt(1);
-            }
-
-            rs.close();
-            statement.close();
-            conexao.close();
-
-            return ultimoId;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    @Transactional
+    public void inserir(Hotel hotel) {
+        this.entityManager.persist(hotel);
     }
 
     public void alterar(Hotel hotel) throws SQLException {
@@ -77,60 +56,11 @@ public class HotelDAO {
         conexao.close();
     }
 
-    public Hotel getById(Integer id) throws SQLException {
-        Connection conexao = FactoryConnetion.getConnection();
-        String sql = "SELECT * from hotel WHERE id_hotel=?";
-        PreparedStatement statement = conexao.prepareStatement(sql);
-        statement.setInt(1, id);
-
-        ResultSet rs = statement.executeQuery();
-
-        Hotel hotel = null;
-
-        while (rs.next()) {
-            hotel = new Hotel(rs.getInt("id_hotel"),
-                    rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-                    new ContatoDAO().getById(rs.getInt("contato_id_contato")));
-        }
-
-        return hotel;
+    public Hotel getById(Integer id){
+        return this.entityManager.find(Hotel.class, id);
     }
 
     public List<Hotel> listAllHotel() {
-        Connection conexao;
-        try {
-            conexao = FactoryConnetion.getConnection();
-            String sql = "SELECT * from hotel";
-            PreparedStatement statement = conexao.prepareStatement(sql);
-
-            ResultSet rs = statement.executeQuery();
-
-            List<Hotel> hoteis = new ArrayList<>();
-
-            while (rs.next()) {
-                Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
-                        new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-                        new ContatoDAO().getById(rs.getInt("contato_id_contato")));
-
-                hoteis.add(hotel);
-            }
-
-            if (hoteis != null && !hoteis.isEmpty()) {
-                for (Hotel hotel : hoteis) {
-                    hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
-                    hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
-                }
-            }
-
-            rs.close();
-            statement.close();
-            conexao.close();
-
-            return hoteis;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return this.entityManager.createQuery("select h from Hotel h", Hotel.class).getResultList();
     }
 }

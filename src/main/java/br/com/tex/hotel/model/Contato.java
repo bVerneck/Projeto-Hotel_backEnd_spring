@@ -1,14 +1,20 @@
 package br.com.tex.hotel.model;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "contato")
 public class Contato {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String telefonePrincipal;
 	private String telefoneAuxiliar;
 	private String email;
-	private Integer id;
 
-	public void contato() {
+	public Contato() {
 	}
 
 	public Contato(String telefonePrincipal, String telefoneAuxiliar, String email) {
@@ -25,6 +31,9 @@ public class Contato {
 	}
 
 
+	public Integer getId() {
+		return id;
+	}
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -34,16 +43,24 @@ public class Contato {
 		return telefonePrincipal;
 	}
 
+	public void setTelefonePrincipal(String telefonePrincipal) {
+		this.telefonePrincipal = telefonePrincipal;
+	}
+
 	public String getTelefoneAuxiliar() {
 		return telefoneAuxiliar;
+	}
+
+	public void setTelefoneAuxiliar(String telefoneAuxiliar) {
+		this.telefoneAuxiliar = telefoneAuxiliar;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public Integer getId() {
-		return id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
