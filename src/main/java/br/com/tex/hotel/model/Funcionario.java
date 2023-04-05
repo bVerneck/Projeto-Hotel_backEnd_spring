@@ -1,5 +1,7 @@
 package br.com.tex.hotel.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -9,15 +11,29 @@ import java.util.Objects;
  * @author willian
  *
  */
+
+@Entity
+@Table(name = "funcionarios")
 public class Funcionario {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer matricula;
 	private String nome;
 	private String cpf;
 	private LocalDate dataNascimento;
 	private BigDecimal salario;
+
+	@JoinColumn(name = "id_contato")
+	@ManyToOne
 	private Contato contato;
+
+	@JoinColumn(name = "id_endereco")
+	@ManyToOne
 	private Endereco endereco;
+
+	@JoinColumn(name = "id_hotel")
+	@ManyToOne
 	private Hotel hotel;
 
 	public Funcionario() {

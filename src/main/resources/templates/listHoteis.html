@@ -18,6 +18,7 @@
     <li th:each="hotel : ${list}">
         <a th:href="@{/hotel/detalhe(id=${hotel.id})}" th:text="${hotel.nome}"></a>
         <a th:href="@{/hotel/deleta/{id}(id=${hotel.id})}">  | Deleta</a>
+        <a th:href="@{/hotel/preparaAlterar/{id}(id=${hotel.id})}">  | Altera</a>
     </li>
 </ul>
 

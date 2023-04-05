@@ -1,19 +1,17 @@
 package br.com.tex.hotel.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.tex.hotel.base.FactoryConnetion;
+import br.com.tex.hotel.enums.Estado;
+import br.com.tex.hotel.enums.TipoLogradouro;
+import br.com.tex.hotel.model.Contato;
+import br.com.tex.hotel.model.Endereco;
 import br.com.tex.hotel.model.Hotel;
+import br.com.tex.hotel.model.dto.HotelInputAlteraDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class HotelDAO {
@@ -26,23 +24,6 @@ public class HotelDAO {
         this.entityManager.persist(hotel);
     }
 
-    public void alterar(Hotel hotel) throws SQLException {
-        Connection conexao = FactoryConnetion.getConnection();
-        String sql = "UPDATE hotel SET nome=?, contato_id_contato=?, endereco_id_endereco=? WHERE id_hotel=?";
-
-        PreparedStatement statement = conexao.prepareStatement(sql);
-
-        statement.setString(1, hotel.getNome());
-        statement.setInt(2, hotel.getContato().getId());
-        statement.setInt(3, hotel.getEndereco().getId());
-        statement.setInt(4, hotel.getId());
-
-        statement.execute();
-
-        statement.close();
-        conexao.close();
-    }
-
     public void delete(Hotel hotel){
         this.entityManager.remove(hotel);
     }
@@ -53,5 +34,25 @@ public class HotelDAO {
 
     public List<Hotel> listAllHotel() {
         return this.entityManager.createQuery("select h from Hotel h", Hotel.class).getResultList();
+    }
+
+    public void alterar(Hotel hotel, HotelInputAlteraDTO dto) {
+        hotel.setNome(dto.getNome());
+
+        Contato contato = this.entityManager.find(Contato.class, hotel.getContato().getId());
+        contato.setTelefoneAuxiliar(dto.getTelefoneAuxiliar());
+        contato.setTelefonePrincipal(dto.getTelefonePrincipal());
+        contato.setEmail(dto.getEmail());
+
+        Endereco endereco = this.entityManager.find(Endereco.class, hotel.getEndereco().getId());
+        endereco.setBairro(dto.getBairro());
+        endereco.setCep(dto.getCep());
+        endereco.setCidade(dto.getCidade());
+        endereco.setEstado(Estado.fromUF(dto.getEstado()));
+        endereco.setComplemento(dto.getComplemento());
+        endereco.setLogradouro(dto.getLogradouro());
+        endereco.setNumeroResidencial(dto.getNumeroResidencial());
+        endereco.setPais(dto.getPais());
+        endereco.setTipoLogradouro(TipoLogradouro.fromDescricao(dto.getTipoLogradouro()));
     }
 }
