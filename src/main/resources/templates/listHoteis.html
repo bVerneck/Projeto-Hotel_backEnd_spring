@@ -10,9 +10,15 @@
 
 <br />
 <br />
+<br/>
+<span th:text="${sucess}"></span>
+<br/>
 
 <ul>
-    <li th:each="hotel : ${list}"><a th:href="@{/hotel/detalhe(id=${hotel.id})}" th:text="${hotel.nome}"></a></li>
+    <li th:each="hotel : ${list}">
+        <a th:href="@{/hotel/detalhe(id=${hotel.id})}" th:text="${hotel.nome}"></a>
+        <a th:href="@{/hotel/deleta/{id}(id=${hotel.id})}">  | Deleta</a>
+    </li>
 </ul>
 
 <br />
