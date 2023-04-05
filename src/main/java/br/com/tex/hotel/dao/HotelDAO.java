@@ -43,17 +43,8 @@ public class HotelDAO {
         conexao.close();
     }
 
-    public void delete(Hotel hotel) throws SQLException {
-        Connection conexao = FactoryConnetion.getConnection();
-        String sql = "DELETE FROM hotel WHERE id_hotel=?";
-
-        PreparedStatement statement = conexao.prepareStatement(sql);
-
-        statement.setInt(1, hotel.getId());
-        statement.execute();
-
-        statement.close();
-        conexao.close();
+    public void delete(Hotel hotel){
+        this.entityManager.remove(hotel);
     }
 
     public Hotel getById(Integer id){

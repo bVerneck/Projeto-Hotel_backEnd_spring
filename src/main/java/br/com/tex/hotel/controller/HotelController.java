@@ -9,11 +9,10 @@ import br.com.tex.hotel.model.dto.HotelInputDTO;
 import br.com.tex.hotel.model.dto.HotelOutputDetalheDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Willian
@@ -44,9 +43,10 @@ public class HotelController {
     }
 
     @PostMapping("/cadastra")
-    public String cadstra(HotelInputDTO hotelInputDTO){
+    public String cadstra(HotelInputDTO hotelInputDTO, RedirectAttributes redirectAttributes){
 
         hotelDAO.inserir(hotelInputDTO.toHotel(hotelInputDTO));
+        redirectAttributes.addFlashAttribute("sucess", "Hotel cadastrado com sucesso!");
         return "redirect:/hotel/lista";
     }
 
@@ -54,5 +54,13 @@ public class HotelController {
     public String mostrarDetalhe(@RequestParam("id") Integer id, Model model){
         model.addAttribute("hotel", new HotelOutputDetalheDTO(hotelDAO.getById(id)));
         return "detalheHotel";
+    }
+
+    @Transactional
+    @GetMapping("/deleta/{id}")
+    public String deleta(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        hotelDAO.delete(hotelDAO.getById(id));
+        redirectAttributes.addFlashAttribute("sucess", "Hotel Excluído com sucesso!");
+        return "redirect:/hotel/lista";
     }
 }
