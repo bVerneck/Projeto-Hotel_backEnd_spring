@@ -1,5 +1,7 @@
 package br.com.tex.hotel.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -8,13 +10,20 @@ import java.util.Objects;
  * @author renor
  *
  */
+@Entity
+@Table(name = "acomodacoes")
 public class Acomodacao {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nomeAcomodacao;
 	private BigDecimal valorAdulto;
 	private BigDecimal valorCrianca;
 	private boolean quartoLivre;
 	private BigDecimal tamanhoQuarto;
+
+	@JoinColumn(name = "id_hotel")
+	@ManyToOne
 	private Hotel hotel;
 
 	public Acomodacao() {
