@@ -4,10 +4,16 @@ import java.util.Objects;
 
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "endereco")
 public class Endereco {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Enumerated(EnumType.STRING)
 	private TipoLogradouro tipoLogradouro;
 	private String logradouro;
 	private Integer numeroResidencial;
@@ -15,6 +21,7 @@ public class Endereco {
 	private String cep;
 	private String bairro;
 	private String cidade;
+	@Enumerated(EnumType.STRING)
 	private Estado estado;
 	private String pais;
 
@@ -60,36 +67,72 @@ public class Endereco {
 		return tipoLogradouro;
 	}
 
+	public void setTipoLogradouro(TipoLogradouro tipoLogradouro) {
+		this.tipoLogradouro = tipoLogradouro;
+	}
+
 	public String getLogradouro() {
 		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
 	public Integer getNumeroResidencial() {
 		return numeroResidencial;
 	}
 
+	public void setNumeroResidencial(Integer numeroResidencial) {
+		this.numeroResidencial = numeroResidencial;
+	}
+
 	public String getComplemento() {
 		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
 
 	public String getCep() {
 		return cep;
 	}
 
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
 	public String getBairro() {
 		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
 
 	public String getCidade() {
 		return cidade;
 	}
 
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
 	public Estado getEstado() {
 		return estado;
 	}
 
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
 	public String getPais() {
 		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 	@Override

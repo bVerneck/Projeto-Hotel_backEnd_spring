@@ -58,7 +58,12 @@ public class HotelInputDTO {
         return new Contato(hotelInputDTO.getTelefonePrincipal(), hotelInputDTO.getTelefoneAuxiliar(), hotelInputDTO.getEmail());
     }
 
-    public Hotel toHotel(HotelInputDTO hotelInputDTO){return new Hotel(hotelInputDTO.getNome());}
+    public Hotel toHotel(HotelInputDTO hotelInputDTO){
+        Hotel hotel =new Hotel(hotelInputDTO.getNome());
+        hotel.setContato(contatoHotel(hotelInputDTO));
+        hotel.setEndereco(enderecoHotel(hotelInputDTO));
+        return hotel;
+    }
 
     public String getNome() {return nome;}
 
