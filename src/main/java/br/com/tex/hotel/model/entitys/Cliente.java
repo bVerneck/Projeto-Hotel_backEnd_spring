@@ -1,4 +1,4 @@
-package br.com.tex.hotel.model;
+package br.com.tex.hotel.model.entitys;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

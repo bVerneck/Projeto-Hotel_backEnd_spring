@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.model.Servico;
+import br.com.tex.hotel.model.entitys.Servico;
 
 public class ServicoDAO {
 
