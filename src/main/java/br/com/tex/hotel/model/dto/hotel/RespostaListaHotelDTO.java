@@ -1,17 +1,19 @@
 package br.com.tex.hotel.model.dto.hotel;
 
 import br.com.tex.hotel.model.entitys.Hotel;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RespostaListaHotelDTO implements java.io.Serializable {
+@ToString
+@NoArgsConstructor
+public class RespostaListaHotelDTO{
 
     private List<HotelOutputApiDTO> lista = new ArrayList<>();
 
-    public RespostaListaHotelDTO() {
-    }
 
     public RespostaListaHotelDTO(List<Hotel> hoteis) {
         hoteis.stream().forEach(h ->{
@@ -27,10 +29,4 @@ public class RespostaListaHotelDTO implements java.io.Serializable {
         this.lista = lista;
     }
 
-    @Override
-    public String toString() {
-        return "RespostaListaHotelDTO{" +
-                "lista=" + lista +
-                '}';
-    }
 }

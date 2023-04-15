@@ -1,5 +1,6 @@
 package br.com.tex.hotel.model.entitys;
 
+import br.com.tex.hotel.model.dto.funcionario.FuncionarioInputSalvarDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -25,11 +26,11 @@ public class Funcionario {
 	private BigDecimal salario;
 
 	@JoinColumn(name = "id_contato")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private Contato contato;
 
 	@JoinColumn(name = "id_endereco")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Endereco endereco;
 
 	@JoinColumn(name = "id_hotel")
@@ -114,6 +115,38 @@ public class Funcionario {
 
 	public Hotel getHotel() {
 		return hotel;
+	}
+
+	public void setMatricula(Integer matricula) {
+		this.matricula = matricula;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public void setSalario(BigDecimal salario) {
+		this.salario = salario;
+	}
+
+	public void setContato(Contato contato) {
+		this.contato = contato;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
 	@Override
