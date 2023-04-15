@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Willian
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/hoteis")
 public class HotelController {
 
