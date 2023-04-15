@@ -1,120 +1,149 @@
 package br.com.tex.hotel.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * 
  * @author willian
- *
  */
+
+@Entity
+@Table(name = "hotel")
 public class Hotel {
-	private Integer id;
-	private String nome;
-	private Endereco endereco;
-	private Contato contato;
-	private List<Funcionario> funcionarios;
-	private List<Acomodacao> acomodacoes;
 
-	public Hotel() {
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String nome;
+    @JoinColumn(name = "id_endereco")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Endereco endereco;
+    @JoinColumn(name = "id_contato")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Contato contato;
 
-	public Hotel(String nome, Endereco endereco, Contato contato) {
-		this.nome = nome;
-		this.endereco = endereco;
-		this.contato = contato;
-	}
+    @Transient
+    private List<Funcionario> funcionarios;
+    @Transient
+    private List<Acomodacao> acomodacoes;
 
-	public Hotel(Integer id, String nome, Endereco endereco, Contato contato) {
-		this.id = id;
-		this.nome = nome;
-		this.endereco = endereco;
-		this.contato = contato;
-	}
+    public Hotel() {
+    }
 
-	public void addFuncionario(Funcionario funcionario) {
-		if (this.funcionarios == null)
-			this.funcionarios = new ArrayList<>();
+    public Hotel(String nome, Endereco endereco, Contato contato) {
+        this.nome = nome;
+        this.endereco = endereco;
+        this.contato = contato;
+    }
 
-		this.funcionarios.add(funcionario);
-	}
+    public Hotel(String nome) {
+        this.nome = nome;
+    }
 
-	public void removeFuncionario(Funcionario funcionario) {
-		if (this.funcionarios != null) {
-			if (this.funcionarios.contains(funcionario))
-				this.funcionarios.remove(funcionario);
-		}
-	}
+    public Hotel(Integer id, String nome, Endereco endereco, Contato contato) {
+        this.id = id;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.contato = contato;
+    }
 
-	public void addAcomodacao(Acomodacao acomodacao) {
-		if (this.acomodacoes == null)
-			this.acomodacoes = new ArrayList<>();
+    public void addFuncionario(Funcionario funcionario) {
+        if (this.funcionarios == null)
+            this.funcionarios = new ArrayList<>();
 
-		this.acomodacoes.add(acomodacao);
-	}
+        this.funcionarios.add(funcionario);
+    }
 
-	public void removeAcomodacao(Acomodacao acomodacao) {
-		if (this.acomodacoes != null && this.acomodacoes.contains(acomodacao))
-			this.acomodacoes.remove(acomodacao);
-	}
+    public void removeFuncionario(Funcionario funcionario) {
+        if (this.funcionarios != null) {
+            if (this.funcionarios.contains(funcionario))
+                this.funcionarios.remove(funcionario);
+        }
+    }
 
-	public List<Funcionario> getFuncionarios() {
-		return funcionarios;
-	}
+    public void addAcomodacao(Acomodacao acomodacao) {
+        if (this.acomodacoes == null)
+            this.acomodacoes = new ArrayList<>();
 
-	public void setFuncionarios(List<Funcionario> funcionarios) {
-		this.funcionarios = funcionarios;
-	}
+        this.acomodacoes.add(acomodacao);
+    }
 
-	public List<Acomodacao> getAcomodacoes() {
-		return acomodacoes;
-	}
+    public void removeAcomodacao(Acomodacao acomodacao) {
+        if (this.acomodacoes != null && this.acomodacoes.contains(acomodacao))
+            this.acomodacoes.remove(acomodacao);
+    }
 
-	public void setAcomodacoes(List<Acomodacao> acomodacoes) {
-		this.acomodacoes = acomodacoes;
-	}
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public List<Acomodacao> getAcomodacoes() {
+        return acomodacoes;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setAcomodacoes(List<Acomodacao> acomodacoes) {
+        this.acomodacoes = acomodacoes;
+    }
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Contato getContato() {
-		return contato;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Hotel other = (Hotel) obj;
-		return Objects.equals(id, other.id);
-	}
+    public Endereco getEndereco() {
+        return endereco;
+    }
 
-	@Override
-	public String toString() {
-		return "Hotel [id=" + id + ", nome=" + nome + "]";
-	}
+    public Contato getContato() {
+        return contato;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setContato(Contato contato) {
+        this.contato = contato;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Hotel other = (Hotel) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Hotel [id=" + id + ", nome=" + nome + "]";
+    }
 
 }

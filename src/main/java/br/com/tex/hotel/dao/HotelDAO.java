@@ -1,128 +1,58 @@
 package br.com.tex.hotel.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import br.com.tex.hotel.enums.Estado;
+import br.com.tex.hotel.enums.TipoLogradouro;
+import br.com.tex.hotel.model.Contato;
+import br.com.tex.hotel.model.Endereco;
+import br.com.tex.hotel.model.Hotel;
+import br.com.tex.hotel.model.dto.HotelInputAlteraDTO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
-import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.model.Hotel;
-
+@Repository
 public class HotelDAO {
 
-	public Integer inserir(Hotel hotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
+    @PersistenceContext
+    private EntityManager entityManager;
 
-		String sql = "INSERT INTO hotel (nome, contato_id_contato, endereco_id_endereco) VALUES(?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    @Transactional
+    public void inserir(Hotel hotel) {
+        this.entityManager.persist(hotel);
+    }
 
-		statement.setString(1, hotel.getNome());
-		statement.setInt(2, hotel.getContato().getId());
-		statement.setInt(3, hotel.getEndereco().getId());
+    public void delete(Hotel hotel){
+        this.entityManager.remove(hotel);
+    }
 
-		statement.executeUpdate();
+    public Hotel getById(Integer id){
+        return this.entityManager.find(Hotel.class, id);
+    }
 
-		ResultSet rs = statement.getGeneratedKeys();
+    public List<Hotel> listAllHotel() {
+        return this.entityManager.createQuery("select h from Hotel h", Hotel.class).getResultList();
+    }
 
-		int ultimoId = 0;
-		while (rs.next()) {
-			ultimoId = rs.getInt(1);
-		}
+    public void alterar(Hotel hotel, HotelInputAlteraDTO dto) {
+        hotel.setNome(dto.getNome());
 
-		rs.close();
-		statement.close();
-		conexao.close();
+        Contato contato = this.entityManager.find(Contato.class, hotel.getContato().getId());
+        contato.setTelefoneAuxiliar(dto.getTelefoneAuxiliar());
+        contato.setTelefonePrincipal(dto.getTelefonePrincipal());
+        contato.setEmail(dto.getEmail());
 
-		return ultimoId;
-	}
-
-	public void alterar(Hotel hotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "UPDATE hotel SET nome=?, contato_id_contato=?, endereco_id_endereco=? WHERE id_hotel=?";
-
-		PreparedStatement statement = conexao.prepareStatement(sql);
-
-		statement.setString(1, hotel.getNome());
-		statement.setInt(2, hotel.getContato().getId());
-		statement.setInt(3, hotel.getEndereco().getId());
-		statement.setInt(4, hotel.getId());
-
-		statement.execute();
-
-		statement.close();
-		conexao.close();
-	}
-
-	public void delete(Hotel hotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "DELETE FROM hotel WHERE id_hotel=?";
-
-		PreparedStatement statement = conexao.prepareStatement(sql);
-
-		statement.setInt(1, hotel.getId());
-		statement.execute();
-
-		statement.close();
-		conexao.close();
-	}
-
-	public Hotel getById(Integer id) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from hotel WHERE id_hotel=?";
-		PreparedStatement statement = conexao.prepareStatement(sql);
-		statement.setInt(1, id);
-
-		ResultSet rs = statement.executeQuery();
-
-		Hotel hotel = null;
-
-		while (rs.next()) {
-			hotel = new Hotel(rs.getInt("id_hotel"),
-					rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
-		}
-
-		return hotel;
-	}
-
-	public List<Hotel> listAllHotel() {
-		Connection conexao;
-		try {
-			conexao = FactoryConnetion.getConnection();
-			String sql = "SELECT * from hotel";
-			PreparedStatement statement = conexao.prepareStatement(sql);
-
-			ResultSet rs = statement.executeQuery();
-
-			List<Hotel> hoteis = new ArrayList<>();
-
-			while (rs.next()) {
-				Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
-						new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
-						new ContatoDAO().getById(rs.getInt("contato_id_contato")));
-
-				hoteis.add(hotel);
-			}
-
-			if (hoteis != null && !hoteis.isEmpty()) {
-				for (Hotel hotel : hoteis) {
-					hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
-					hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
-				}
-			}
-
-			rs.close();
-			statement.close();
-			conexao.close();
-
-			return hoteis;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+        Endereco endereco = this.entityManager.find(Endereco.class, hotel.getEndereco().getId());
+        endereco.setBairro(dto.getBairro());
+        endereco.setCep(dto.getCep());
+        endereco.setCidade(dto.getCidade());
+        endereco.setEstado(Estado.fromUF(dto.getEstado()));
+        endereco.setComplemento(dto.getComplemento());
+        endereco.setLogradouro(dto.getLogradouro());
+        endereco.setNumeroResidencial(dto.getNumeroResidencial());
+        endereco.setPais(dto.getPais());
+        endereco.setTipoLogradouro(TipoLogradouro.fromDescricao(dto.getTipoLogradouro()));
+    }
 }

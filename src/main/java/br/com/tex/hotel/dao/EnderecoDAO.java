@@ -12,128 +12,136 @@ import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
 import br.com.tex.hotel.model.Endereco;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class EnderecoDAO {
 
-	public Integer inserir(Endereco endereco) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
+    public Integer inserir(Endereco endereco) {
+        try {
+            Connection conexao = FactoryConnetion.getConnection();
 
-		String sql = "INSERT INTO endereco (tipoLogradouro, logradouro, numeroResidencial,"
-				+ " complemento, bairro, cidade," + " estado, pais, cep) " + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            String sql = "INSERT INTO endereco (tipoLogradouro, logradouro, numeroResidencial,"
+                    + " complemento, bairro, cidade," + " estado, pais, cep) " + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-		statement.setString(1, endereco.getTipoLogradouro().getDescricao());
-		statement.setString(2, endereco.getLogradouro());
-		statement.setInt(3, endereco.getNumeroResidencial());
-		statement.setString(4, endereco.getComplemento());
-		statement.setString(5, endereco.getBairro());
-		statement.setString(6, endereco.getCidade());
-		statement.setString(7, endereco.getEstado().getNome());
-		statement.setString(8, endereco.getPais());
-		statement.setString(9, endereco.getCep());
+            statement.setString(1, endereco.getTipoLogradouro().getDescricao());
+            statement.setString(2, endereco.getLogradouro());
+            statement.setInt(3, endereco.getNumeroResidencial());
+            statement.setString(4, endereco.getComplemento());
+            statement.setString(5, endereco.getBairro());
+            statement.setString(6, endereco.getCidade());
+            statement.setString(7, endereco.getEstado().getNome());
+            statement.setString(8, endereco.getPais());
+            statement.setString(9, endereco.getCep());
 
-		statement.executeUpdate();
+            statement.executeUpdate();
 
-		ResultSet rs = statement.getGeneratedKeys();
+            ResultSet rs = statement.getGeneratedKeys();
 
-		int ultimoId = 0;
-		while (rs.next()) {
-			ultimoId = rs.getInt(1);
-		}
+            int ultimoId = 0;
+            while (rs.next()) {
+                ultimoId = rs.getInt(1);
+            }
 
-		rs.close();
-		statement.close();
-		conexao.close();
+            rs.close();
+            statement.close();
+            conexao.close();
 
-		return ultimoId;
-	}
+            return ultimoId;
 
-	public void alterar(Endereco endereco) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-		String sql = "UPDATE endereco SET tipoLogradouro= ?, logradouro= ?, numeroResidencial= ?,"
-				+ " complemento= ?, bairro= ?, cidade= ?," + " estado= ?, pais= ?, cep= ?" + " WHERE id_endereco=?"
-				+ "";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+    public void alterar(Endereco endereco) throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
 
-		statement.setString(1, endereco.getTipoLogradouro().getDescricao());
-		statement.setString(2, endereco.getLogradouro());
-		statement.setInt(3, endereco.getNumeroResidencial());
-		statement.setString(4, endereco.getComplemento());
-		statement.setString(5, endereco.getBairro());
-		statement.setString(6, endereco.getCidade());
-		statement.setString(7, endereco.getEstado().getNome());
-		statement.setString(8, endereco.getPais());
-		statement.setString(9, endereco.getCep());
-		statement.setInt(10, endereco.getId());
+        String sql = "UPDATE endereco SET tipoLogradouro= ?, logradouro= ?, numeroResidencial= ?,"
+                + " complemento= ?, bairro= ?, cidade= ?," + " estado= ?, pais= ?, cep= ?" + " WHERE id_endereco=?"
+                + "";
+        PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.execute();
+        statement.setString(1, endereco.getTipoLogradouro().getDescricao());
+        statement.setString(2, endereco.getLogradouro());
+        statement.setInt(3, endereco.getNumeroResidencial());
+        statement.setString(4, endereco.getComplemento());
+        statement.setString(5, endereco.getBairro());
+        statement.setString(6, endereco.getCidade());
+        statement.setString(7, endereco.getEstado().getNome());
+        statement.setString(8, endereco.getPais());
+        statement.setString(9, endereco.getCep());
+        statement.setInt(10, endereco.getId());
 
-		statement.close();
-		conexao.close();
-	}
+        statement.execute();
 
-	public void delete(Endereco endereco) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "DELETE FROM endereco WHERE id_endereco= ?";
+        statement.close();
+        conexao.close();
+    }
 
-		PreparedStatement statement = conexao.prepareStatement(sql);
+    public void delete(Endereco endereco) throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
+        String sql = "DELETE FROM endereco WHERE id_endereco= ?";
 
-		statement.setInt(1, endereco.getId());
+        PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.execute();
+        statement.setInt(1, endereco.getId());
 
-		statement.close();
-		conexao.close();
-	}
+        statement.execute();
 
-	public Endereco getById(Integer id) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from endereco WHERE id_endereco=?";
-		PreparedStatement statement = conexao.prepareStatement(sql);
-		statement.setInt(1, id);
+        statement.close();
+        conexao.close();
+    }
 
-		ResultSet rs = statement.executeQuery();
+    public Endereco getById(Integer id) throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
+        String sql = "SELECT * from endereco WHERE id_endereco=?";
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, id);
 
-		Endereco endereco = null;
+        ResultSet rs = statement.executeQuery();
 
-		while (rs.next()) {
-			endereco = new Endereco(id, TipoLogradouro.fromDescricao(rs.getString("tipoLogradouro")),
-					rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
-					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF(rs.getString("estado")),
-					rs.getString("pais"));
-		}
+        Endereco endereco = null;
 
-		rs.close();
-		statement.close();
-		conexao.close();
+        while (rs.next()) {
+            endereco = new Endereco(id, TipoLogradouro.fromDescricao(rs.getString("tipoLogradouro")),
+                    rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
+                    rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF(rs.getString("estado")),
+                    rs.getString("pais"));
+        }
 
-		return endereco;
-	}
+        rs.close();
+        statement.close();
+        conexao.close();
 
-	public List<Endereco> listAllEndereco() throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from endereco";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+        return endereco;
+    }
 
-		ResultSet rs = statement.executeQuery();
+    public List<Endereco> listAllEndereco() throws SQLException {
+        Connection conexao = FactoryConnetion.getConnection();
+        String sql = "SELECT * from endereco";
+        PreparedStatement statement = conexao.prepareStatement(sql);
 
-		List<Endereco> enderecos = new ArrayList<>();
+        ResultSet rs = statement.executeQuery();
 
-		while (rs.next()) {
-			Endereco endereco = new Endereco(rs.getInt("id_endereco"),
-					TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
-					rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
-					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF("estado"),
-					rs.getString("pais"));
+        List<Endereco> enderecos = new ArrayList<>();
 
-			enderecos.add(endereco);
-		}
+        while (rs.next()) {
+            Endereco endereco = new Endereco(rs.getInt("id_endereco"),
+                    TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
+                    rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
+                    rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF("estado"),
+                    rs.getString("pais"));
 
-		rs.close();
-		statement.close();
-		conexao.close();
+            enderecos.add(endereco);
+        }
 
-		return enderecos;
-	}
+        rs.close();
+        statement.close();
+        conexao.close();
+
+        return enderecos;
+    }
 }
