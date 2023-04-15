@@ -4,150 +4,62 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.model.Acomodacao;
+import br.com.tex.hotel.model.dto.acomodacao.AcomodacaoInputAlterarDTO;
+import br.com.tex.hotel.model.dto.acomodacao.AcomodacaoInputSalvarDTO;
+import br.com.tex.hotel.model.dto.acomodacao.AcomodacaoOutputDTO;
+import br.com.tex.hotel.model.entitys.Acomodacao;
+import br.com.tex.hotel.model.entitys.Hotel;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AcomodacaoDAO {
 
-	public Integer inserir(Acomodacao acomodacao) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
+	@PersistenceContext
+	private EntityManager em;
 
-		String sql = "INSERT INTO acomodacao (nome, valorPorAdulto, valorPorCrianca,"
-				+ " tamanho, quartoLivre, hotel_id_hotel)" + " VALUES(?, ?, ?, ?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-		statement.setString(1, acomodacao.getNomeAcomodacao());
-		statement.setBigDecimal(2, acomodacao.getValorAdulto());
-		statement.setBigDecimal(3, acomodacao.getValorCrianca());
-		statement.setBigDecimal(4, acomodacao.getTamanhoQuarto());
-		statement.setBoolean(5, acomodacao.isQuartoLivre());
-		statement.setInt(6, acomodacao.getHotel().getId());
-
-		statement.executeUpdate();
-
-		ResultSet rs = statement.getGeneratedKeys();
-
-		int ultimoId = 0;
-		while (rs.next()) {
-			ultimoId = rs.getInt(1);
-		}
-
-		rs.close();
-		statement.close();
-		conexao.close();
-
-		return ultimoId;
+	public void inserir(AcomodacaoInputSalvarDTO dto){
+		Acomodacao acomodacao = dto.toEntityAcomodacao();
+		acomodacao.setHotel(this.em.find(Hotel.class, dto.getIdHotel()));
+		this.em.persist(acomodacao);
 	}
 
-	public void alterar(Acomodacao acomodacao) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "UPDATE acomodacao SET nome= ?, valorPorAdulto= ?, valorPorCrianca= ?,"
-				+ " tamanho= ?, quartoLivre= ?, hotel_id_hotel= ?" + " WHERE id_acomodacao= ?";
-
-		PreparedStatement statement = conexao.prepareStatement(sql);
-
-		statement.setString(1, acomodacao.getNomeAcomodacao());
-		statement.setBigDecimal(2, acomodacao.getValorAdulto());
-		statement.setBigDecimal(3, acomodacao.getValorCrianca());
-		statement.setBigDecimal(4, acomodacao.getTamanhoQuarto());
-		statement.setBoolean(5, acomodacao.isQuartoLivre());
-		statement.setInt(6, acomodacao.getHotel().getId());
-		statement.setInt(7, acomodacao.getId());
-
-		statement.execute();
-
-		statement.close();
-		conexao.close();
+	public void alterar(AcomodacaoInputAlterarDTO dto){
+		Acomodacao acomodacao = dto.toEntityAcomodacao(this.em.find(Acomodacao.class, dto.getId()));
+		this.em.persist(acomodacao);
 	}
 
-	public void delete(Acomodacao acomodacao) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "DELETE FROM acomodacao WHERE id_acomodacao=?";
-
-		PreparedStatement statement = conexao.prepareStatement(sql);
-
-		statement.setInt(1, acomodacao.getId());
-		statement.execute();
-
-		statement.close();
-		conexao.close();
+	public void delete(Integer id){
+		this.em.remove(this.em.find(Acomodacao.class, id));
 	}
 
-	public Acomodacao getById(Integer id) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from acomodacao WHERE id_acomodacao= ?";
-		PreparedStatement statement = conexao.prepareStatement(sql);
-		statement.setInt(1, id);
-
-		ResultSet rs = statement.executeQuery();
-
-		Acomodacao acomodacao = null;
-
-		while (rs.next()) {
-			acomodacao = new Acomodacao(rs.getInt("id_acomodacao"), rs.getString("nome"),
-					rs.getBigDecimal("valorPorAdulto"), rs.getBigDecimal("valorPorCrianca"),
-					rs.getBoolean("quartoLivre"), rs.getBigDecimal("tamanho"),
-					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-		}
-
-		return acomodacao;
+	public AcomodacaoOutputDTO getById(Integer id){
+		return  new AcomodacaoOutputDTO(this.em.find(Acomodacao.class, id));
 	}
 
-	public List<Acomodacao> listAllAcomodacao() throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from acomodacao";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+	public List<AcomodacaoOutputDTO> listAllAcomodacao(){
+		String jpql = "select a from Acomodacao a";
 
-		ResultSet rs = statement.executeQuery();
-
-		List<Acomodacao> quartos = new ArrayList<>();
-
-		while (rs.next()) {
-			Acomodacao acomodacao = new Acomodacao(rs.getInt("id_acomodacao"), rs.getString("nome"),
-					rs.getBigDecimal("valorPorAdulto"), rs.getBigDecimal("valorPorCrianca"),
-					rs.getBoolean("quartoLivre"), rs.getBigDecimal("tamanho"),
-					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-
-			quartos.add(acomodacao);
-		}
-
-		rs.close();
-		statement.close();
-		conexao.close();
-
-		return quartos;
+		return this.em.createQuery(jpql, Acomodacao.class)
+				.getResultList()
+				.stream()
+				.map(a -> new AcomodacaoOutputDTO(a))
+				.toList();
 	}
 
-	public List<Acomodacao> listAcomodacaoByHotel(int idHotel) throws SQLException {
-		Connection conexao = FactoryConnetion.getConnection();
-		String sql = "SELECT * from acomodacao WHERE hotel_id_hotel=?";
-		PreparedStatement statement = conexao.prepareStatement(sql);
-		statement.setInt(1, idHotel);
+	public List<AcomodacaoOutputDTO> listAcomodacaoByHotel(int idHotel){
+		String jpql = "select a from Acomodacao a where a.hotel = :id";
 
-		ResultSet rs = statement.executeQuery();
-
-		List<Acomodacao> quartos = new ArrayList<>();
-
-		while (rs.next()) {
-			Acomodacao acomodacao = new Acomodacao(rs.getInt("id_acomodacao"), rs.getString("nome"),
-					rs.getBigDecimal("valorPorAdulto"), rs.getBigDecimal("valorPorCrianca"),
-					rs.getBoolean("quartoLivre"), rs.getBigDecimal("tamanho"),
-					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-
-			quartos.add(acomodacao);
-		}
-
-		rs.close();
-		statement.close();
-		conexao.close();
-
-		return quartos;
+		return this.em.createQuery(jpql, Acomodacao.class).setParameter("id", idHotel)
+				.getResultList()
+				.stream()
+				.map(a -> new AcomodacaoOutputDTO(a))
+				.toList();
 	}
 
 }

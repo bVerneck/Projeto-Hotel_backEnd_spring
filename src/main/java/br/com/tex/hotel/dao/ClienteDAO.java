@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.model.Cliente;
+import br.com.tex.hotel.model.entitys.Cliente;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.model.Reserva;
+import br.com.tex.hotel.model.entitys.Reserva;
 
 
 public class ReservaDAO {
@@ -87,15 +87,15 @@ public class ReservaDAO {
 
 		Reserva reserva = null;
 
-		while (rs.next()) {
-			reserva = new Reserva(rs.getInt("id_reserva"),
-					rs.getDate("dataCheckin").toLocalDate(),
-					rs.getDate("dataCheckout").toLocalDate(),
-					rs.getInt("quantidadeAdulto"),
-					rs.getInt("quantidadeCrianca"),
-					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
-
-		}
+//		while (rs.next()) {
+//			reserva = new Reserva(rs.getInt("id_reserva"),
+//					rs.getDate("dataCheckin").toLocalDate(),
+//					rs.getDate("dataCheckout").toLocalDate(),
+//					rs.getInt("quantidadeAdulto"),
+//					rs.getInt("quantidadeCrianca"),
+//					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
+//
+//		}
 
 		rs.close();
 		statement.close();
@@ -113,16 +113,16 @@ public class ReservaDAO {
 
 		List<Reserva> reservas = new ArrayList<>();
 
-		while (rs.next()) {
-			Reserva reserva = new Reserva(rs.getInt("id_reserva"),
-					rs.getDate("dataCheckin").toLocalDate(),
-					rs.getDate("dataCheckout").toLocalDate(),
-					rs.getInt("quantidadeAdulto"),
-					rs.getInt("quantidadeCrianca"),
-					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
-
-			reservas.add(reserva);
-		}
+//		while (rs.next()) {
+//			Reserva reserva = new Reserva(rs.getInt("id_reserva"),
+//					rs.getDate("dataCheckin").toLocalDate(),
+//					rs.getDate("dataCheckout").toLocalDate(),
+//					rs.getInt("quantidadeAdulto"),
+//					rs.getInt("quantidadeCrianca"),
+//					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
+//
+//			reservas.add(reserva);
+//		}
 
 		rs.close();
 		statement.close();
@@ -146,16 +146,16 @@ public class ReservaDAO {
 
 		List<Reserva> reservas = new ArrayList<>();
 
-		while (rs.next()) {
-			Reserva reserva = new Reserva(rs.getInt("id_reserva"),
-					rs.getDate("dataCheckin").toLocalDate(),
-					rs.getDate("dataCheckout").toLocalDate(),
-					rs.getInt("quantidadeAdulto"),
-					rs.getInt("quantidadeCrianca"),
-					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
-
-			reservas.add(reserva);
-		}
+//		while (rs.next()) {
+//			Reserva reserva = new Reserva(rs.getInt("id_reserva"),
+//					rs.getDate("dataCheckin").toLocalDate(),
+//					rs.getDate("dataCheckout").toLocalDate(),
+//					rs.getInt("quantidadeAdulto"),
+//					rs.getInt("quantidadeCrianca"),
+//					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
+//
+//			reservas.add(reserva);
+//		}
 
 		rs.close();
 		statement.close();

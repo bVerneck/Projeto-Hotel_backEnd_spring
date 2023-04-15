@@ -1,27 +1,41 @@
-package br.com.tex.hotel.model.dto;
+package br.com.tex.hotel.model.dto.hotel;
 
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
+import br.com.tex.hotel.model.entitys.Hotel;
 
 import java.util.Objects;
 
-public class HotelInputAlteraDTO {
+public class HotelOutputDetalheDTO {
+
     private Integer id;
-    private String nome;
+    private String nomeHotel;
     private String telefonePrincipal;
     private String telefoneAuxiliar;
     private String email;
-    private String tipoLogradouro;
+    private TipoLogradouro tipoLogradouro;
     private String logradouro;
     private Integer numeroResidencial;
     private String complemento;
     private String cep;
     private String bairro;
     private String cidade;
-    private String estado;
-    private String pais;
+    private Estado estado;
 
-    public HotelInputAlteraDTO() {
+    public HotelOutputDetalheDTO(Hotel hotel) {
+        this.id = hotel.getId();
+        this.nomeHotel = hotel.getNome();
+        this.telefonePrincipal = hotel.getContato().getTelefonePrincipal();
+        this.telefoneAuxiliar = hotel.getContato().getTelefoneAuxiliar();
+        this.email = hotel.getContato().getEmail();
+        this.tipoLogradouro = hotel.getEndereco().getTipoLogradouro();
+        this.logradouro = hotel.getEndereco().getLogradouro();
+        this.numeroResidencial = hotel.getEndereco().getNumeroResidencial();
+        this.complemento = hotel.getEndereco().getComplemento();
+        this.cep = hotel.getEndereco().getComplemento();
+        this.bairro = hotel.getEndereco().getBairro();
+        this.cidade = hotel.getEndereco().getCidade();
+        this.estado = hotel.getEndereco().getEstado();
     }
 
     public Integer getId() {
@@ -32,12 +46,12 @@ public class HotelInputAlteraDTO {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeHotel() {
+        return nomeHotel;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeHotel(String nomeHotel) {
+        this.nomeHotel = nomeHotel;
     }
 
     public String getTelefonePrincipal() {
@@ -62,6 +76,14 @@ public class HotelInputAlteraDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public TipoLogradouro getTipoLogradouro() {
+        return tipoLogradouro;
+    }
+
+    public void setTipoLogradouro(TipoLogradouro tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
     }
 
     public String getLogradouro() {
@@ -112,34 +134,18 @@ public class HotelInputAlteraDTO {
         this.cidade = cidade;
     }
 
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public String getTipoLogradouro() {
-        return tipoLogradouro;
-    }
-
-    public void setTipoLogradouro(String tipoLogradouro) {
-        this.tipoLogradouro = tipoLogradouro;
-    }
-
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HotelInputAlteraDTO that)) return false;
+        if (!(o instanceof HotelOutputDetalheDTO that)) return false;
         return Objects.equals(id, that.id);
     }
 
@@ -150,21 +156,20 @@ public class HotelInputAlteraDTO {
 
     @Override
     public String toString() {
-        return "HotelInputAlteraDTO{" +
+        return "HotelOutputDetalheDTO{" +
                 "id=" + id +
-                ", nome='" + nome + '\'' +
+                ", nomeHotel='" + nomeHotel + '\'' +
                 ", telefonePrincipal='" + telefonePrincipal + '\'' +
                 ", telefoneAuxiliar='" + telefoneAuxiliar + '\'' +
                 ", email='" + email + '\'' +
-                ", tipoLogradouro='" + tipoLogradouro + '\'' +
+                ", tipoLogradouro=" + tipoLogradouro +
                 ", logradouro='" + logradouro + '\'' +
                 ", numeroResidencial=" + numeroResidencial +
                 ", complemento='" + complemento + '\'' +
                 ", cep='" + cep + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
-                ", estado='" + estado + '\'' +
-                ", pais='" + pais + '\'' +
+                ", estado=" + estado +
                 '}';
     }
 }

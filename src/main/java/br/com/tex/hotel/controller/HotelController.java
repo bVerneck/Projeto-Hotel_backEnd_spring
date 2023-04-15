@@ -1,10 +1,10 @@
 package br.com.tex.hotel.controller;
 
 import br.com.tex.hotel.dao.HotelDAO;
-import br.com.tex.hotel.model.dto.HotelInputAlteraDTO;
-import br.com.tex.hotel.model.dto.HotelInputDTO;
-import br.com.tex.hotel.model.dto.HotelOutputDetalheDTO;
-import br.com.tex.hotel.model.dto.RespostaListaHotelDTO;
+import br.com.tex.hotel.model.dto.hotel.HotelInputAlteraDTO;
+import br.com.tex.hotel.model.dto.hotel.HotelInputDTO;
+import br.com.tex.hotel.model.dto.hotel.HotelOutputDetalheDTO;
+import br.com.tex.hotel.model.dto.hotel.RespostaListaHotelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

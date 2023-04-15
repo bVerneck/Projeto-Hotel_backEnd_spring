@@ -1,4 +1,4 @@
-package br.com.tex.hotel.model;
+package br.com.tex.hotel.model.entitys;
 
 import java.math.BigDecimal;
 import java.util.Objects;

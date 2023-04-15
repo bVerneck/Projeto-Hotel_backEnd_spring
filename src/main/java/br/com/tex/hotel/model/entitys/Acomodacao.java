@@ -1,4 +1,4 @@
-package br.com.tex.hotel.model;
+package br.com.tex.hotel.model.entitys;
 
 import jakarta.persistence.*;
 
@@ -90,6 +90,14 @@ public class Acomodacao {
 	public BigDecimal getTamanhoQuarto() {
 		return tamanhoQuarto;
 	}
+
+	public void setNomeAcomodacao(String nomeAcomodacao) {this.nomeAcomodacao = nomeAcomodacao;}
+
+	public void setValorAdulto(BigDecimal valorAdulto) {this.valorAdulto = valorAdulto;}
+
+	public void setValorCrianca(BigDecimal valorCrianca) {this.valorCrianca = valorCrianca;}
+
+	public void setTamanhoQuarto(BigDecimal tamanhoQuarto) {this.tamanhoQuarto = tamanhoQuarto;}
 
 	public Hotel getHotel() {
 		return hotel;

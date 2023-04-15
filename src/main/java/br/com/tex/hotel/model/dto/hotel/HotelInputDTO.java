@@ -1,10 +1,10 @@
-package br.com.tex.hotel.model.dto;
+package br.com.tex.hotel.model.dto.hotel;
 
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
-import br.com.tex.hotel.model.Contato;
-import br.com.tex.hotel.model.Endereco;
-import br.com.tex.hotel.model.Hotel;
+import br.com.tex.hotel.model.entitys.Contato;
+import br.com.tex.hotel.model.entitys.Endereco;
+import br.com.tex.hotel.model.entitys.Hotel;
 
 import java.util.Objects;
 

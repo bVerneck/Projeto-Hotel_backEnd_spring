@@ -2,10 +2,10 @@ package br.com.tex.hotel.dao;
 
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
-import br.com.tex.hotel.model.Contato;
-import br.com.tex.hotel.model.Endereco;
-import br.com.tex.hotel.model.Hotel;
-import br.com.tex.hotel.model.dto.HotelInputAlteraDTO;
+import br.com.tex.hotel.model.entitys.Contato;
+import br.com.tex.hotel.model.entitys.Endereco;
+import br.com.tex.hotel.model.entitys.Hotel;
+import br.com.tex.hotel.model.dto.hotel.HotelInputAlteraDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

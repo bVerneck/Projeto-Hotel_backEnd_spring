@@ -1,6 +1,6 @@
-package br.com.tex.hotel.model.dto;
+package br.com.tex.hotel.model.dto.hotel;
 
-import br.com.tex.hotel.model.Hotel;
+import br.com.tex.hotel.model.entitys.Hotel;
 
 import java.util.Objects;
 

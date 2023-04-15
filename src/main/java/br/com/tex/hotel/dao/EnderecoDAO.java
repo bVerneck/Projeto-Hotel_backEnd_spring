@@ -11,7 +11,7 @@ import java.util.List;
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
-import br.com.tex.hotel.model.Endereco;
+import br.com.tex.hotel.model.entitys.Endereco;
 import org.springframework.stereotype.Repository;
 
 @Repository
