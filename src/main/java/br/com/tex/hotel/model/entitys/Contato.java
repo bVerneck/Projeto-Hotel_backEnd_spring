@@ -1,9 +1,13 @@
 package br.com.tex.hotel.model.entitys;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "contato")
 public class Contato {
@@ -30,39 +34,6 @@ public class Contato {
 		this.id = id;
 	}
 
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTelefonePrincipal() {
-		return telefonePrincipal;
-	}
-
-	public void setTelefonePrincipal(String telefonePrincipal) {
-		this.telefonePrincipal = telefonePrincipal;
-	}
-
-	public String getTelefoneAuxiliar() {
-		return telefoneAuxiliar;
-	}
-
-	public void setTelefoneAuxiliar(String telefoneAuxiliar) {
-		this.telefoneAuxiliar = telefoneAuxiliar;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -79,11 +50,4 @@ public class Contato {
 		Contato other = (Contato) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	@Override
-	public String toString() {
-		return "Contato [telefonePrincipal=" + telefonePrincipal + ", telefoneAuxiliar=" + telefoneAuxiliar + ", email="
-				+ email + ", id=" + id + "]";
-	}
-
 }
