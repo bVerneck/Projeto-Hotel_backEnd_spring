@@ -1,6 +1,9 @@
 package br.com.tex.hotel.model.entitys;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,9 @@ import java.util.Objects;
  * @author willian
  */
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "hotel")
 public class Hotel {
@@ -29,9 +35,6 @@ public class Hotel {
     private List<Funcionario> funcionarios;
     @Transient
     private List<Acomodacao> acomodacoes;
-
-    public Hotel() {
-    }
 
     public Hotel(String nome, Endereco endereco, Contato contato) {
         this.nome = nome;
@@ -74,54 +77,6 @@ public class Hotel {
     public void removeAcomodacao(Acomodacao acomodacao) {
         if (this.acomodacoes != null && this.acomodacoes.contains(acomodacao))
             this.acomodacoes.remove(acomodacao);
-    }
-
-    public List<Funcionario> getFuncionarios() {
-        return funcionarios;
-    }
-
-    public void setFuncionarios(List<Funcionario> funcionarios) {
-        this.funcionarios = funcionarios;
-    }
-
-    public List<Acomodacao> getAcomodacoes() {
-        return acomodacoes;
-    }
-
-    public void setAcomodacoes(List<Acomodacao> acomodacoes) {
-        this.acomodacoes = acomodacoes;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public Contato getContato() {
-        return contato;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public void setContato(Contato contato) {
-        this.contato = contato;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     @Override

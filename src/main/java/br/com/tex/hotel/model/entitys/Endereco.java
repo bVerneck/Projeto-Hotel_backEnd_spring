@@ -5,7 +5,16 @@ import java.util.Objects;
 import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "endereco")
 public class Endereco {
@@ -25,9 +34,6 @@ public class Endereco {
 	private Estado estado;
 	private String pais;
 
-	public Endereco() {
-	}
-
 	public Endereco(TipoLogradouro tipoLogradouro, String logradouro, Integer numeroResidencial, String complemento,
 					String cep, String bairro, String cidade, Estado estado, String pais) {
 		this.tipoLogradouro = tipoLogradouro;
@@ -38,100 +44,6 @@ public class Endereco {
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.estado = estado;
-		this.pais = pais;
-	}
-
-	public Endereco(Integer id, TipoLogradouro tipoLogradouro, String logradouro, Integer numeroResidencial,
-					String complemento, String cep, String bairro, String cidade, Estado estado, String pais) {
-		this.id = id;
-		this.tipoLogradouro = tipoLogradouro;
-		this.logradouro = logradouro;
-		this.numeroResidencial = numeroResidencial;
-		this.complemento = complemento;
-		this.cep = cep;
-		this.bairro = bairro;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.pais = pais;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public TipoLogradouro getTipoLogradouro() {
-		return tipoLogradouro;
-	}
-
-	public void setTipoLogradouro(TipoLogradouro tipoLogradouro) {
-		this.tipoLogradouro = tipoLogradouro;
-	}
-
-	public String getLogradouro() {
-		return logradouro;
-	}
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
-
-	public Integer getNumeroResidencial() {
-		return numeroResidencial;
-	}
-
-	public void setNumeroResidencial(Integer numeroResidencial) {
-		this.numeroResidencial = numeroResidencial;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
-
-	public String getPais() {
-		return pais;
-	}
-
-	public void setPais(String pais) {
 		this.pais = pais;
 	}
 

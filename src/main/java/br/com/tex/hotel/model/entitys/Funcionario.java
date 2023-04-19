@@ -2,6 +2,10 @@ package br.com.tex.hotel.model.entitys;
 
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioInputSalvarDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +17,10 @@ import java.util.Objects;
  *
  */
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "funcionarios")
 public class Funcionario {
@@ -37,9 +45,6 @@ public class Funcionario {
 	@ManyToOne
 	private Hotel hotel;
 
-	public Funcionario() {
-	}
-
 	public Funcionario(Integer matricula, String nome, String cpf, LocalDate dataNascimento, BigDecimal salario,
 					   Contato contato, Endereco endereco, Hotel hotel) {
 		this.matricula = matricula;
@@ -52,22 +57,8 @@ public class Funcionario {
 		this.hotel = hotel;
 	}
 
-	public Funcionario(Integer id, Integer matricula, String nome, String cpf, LocalDate dataNascimento,
-					   BigDecimal salario, Contato contato, Endereco endereco, Hotel hotel) {
-		this.id = id;
-		this.matricula = matricula;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.salario = salario;
-		this.contato = contato;
-		this.endereco = endereco;
-		this.hotel = hotel;
-	}
-
 	public Funcionario(Integer matricula, String nome, String cpf, LocalDate dataNascimento, BigDecimal salario,
 					   Contato contato, Endereco endereco) {
-		super();
 		this.matricula = matricula;
 		this.nome = nome;
 		this.cpf = cpf;
@@ -75,78 +66,6 @@ public class Funcionario {
 		this.salario = salario;
 		this.contato = contato;
 		this.endereco = endereco;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getMatricula() {
-		return matricula;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public BigDecimal getSalario() {
-		return salario;
-	}
-
-	public Contato getContato() {
-		return contato;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public Hotel getHotel() {
-		return hotel;
-	}
-
-	public void setMatricula(Integer matricula) {
-		this.matricula = matricula;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public void setSalario(BigDecimal salario) {
-		this.salario = salario;
-	}
-
-	public void setContato(Contato contato) {
-		this.contato = contato;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
 	}
 
 	@Override
