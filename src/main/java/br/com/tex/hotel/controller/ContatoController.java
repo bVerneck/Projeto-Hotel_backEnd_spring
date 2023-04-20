@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.*;
 public class ContatoController {
 
     @Autowired
-    private ContatoRepository repository;
+    private ContatoRepository contatoRepository;
 
     @GetMapping
     public ResponseEntity lista() {
-        return ResponseEntity.ok(new ContatoOutputDTO().lista(repository.findAll()));
+        return ResponseEntity.ok(new ContatoOutputDTO().lista(contatoRepository.findAll()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id){
-        return ResponseEntity.ok(new ContatoOutputDTO(this.repository.findById(id).get()));
+        return ResponseEntity.ok(new ContatoOutputDTO(this.contatoRepository.findById(id).get()));
     }
 
     @Transactional
     @PostMapping
     public ResponseEntity salvar(@RequestBody ContatoInputDTO contatoDTO){
-        this.repository.save(contatoDTO.toEntityContato());
+        this.contatoRepository.save(contatoDTO.toEntityContato());
         return ResponseEntity.status(HttpStatus.CREATED).body(contatoDTO);
     }
 
@@ -43,14 +43,14 @@ public class ContatoController {
         Contato contato = contatoDTO.toEntityContato();
         contato.setId(id);
 
-        this.repository.save(contato);
+        this.contatoRepository.save(contato);
         return ResponseEntity.ok(contatoDTO);
     }
 
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable Integer id){
-        this.repository.deleteById(id);
+        this.contatoRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
