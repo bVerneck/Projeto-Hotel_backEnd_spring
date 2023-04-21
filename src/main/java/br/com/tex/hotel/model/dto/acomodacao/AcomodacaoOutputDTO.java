@@ -3,6 +3,7 @@ package br.com.tex.hotel.model.dto.acomodacao;
 import br.com.tex.hotel.model.entitys.Acomodacao;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author willian
@@ -28,5 +29,12 @@ public class AcomodacaoOutputDTO {
         this.valorCrianca = acomodacao.getValorCrianca();
         this.quartoLivre = acomodacao.isQuartoLivre();
         this.tamanhoQuarto = acomodacao.getTamanhoQuarto();
+    }
+
+    public List<AcomodacaoOutputDTO> lista(List<Acomodacao> acomodacoes){
+        return acomodacoes
+                .stream()
+                .map(a-> new AcomodacaoOutputDTO(a))
+                .toList();
     }
 }

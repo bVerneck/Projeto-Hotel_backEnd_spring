@@ -40,6 +40,9 @@ public class EnderecoOutputDTO {
     }
 
     public List<EnderecoOutputDTO> lista(List<Endereco> enderecos){
-        return enderecos.stream().map(e -> new EnderecoOutputDTO(e)).toList();
+        return enderecos
+                .stream()
+                .map(e -> new EnderecoOutputDTO(e))
+                .toList();
     }
 }
