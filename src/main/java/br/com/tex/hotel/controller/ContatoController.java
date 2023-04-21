@@ -35,7 +35,6 @@ public class ContatoController {
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
         Contato contato = this.contatoRepository.getReferenceById(id);
-
         return ResponseEntity.ok(new ContatoOutputDTO(contato));
     }
 
