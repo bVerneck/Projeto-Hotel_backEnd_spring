@@ -1,6 +1,5 @@
 package br.com.tex.hotel.controller;
 
-import br.com.tex.hotel.dao.FuncionarioDAO;
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioInputAlterarDTO;
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioInputSalvarDTO;
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioOutputDTO;
@@ -20,10 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
-
-    @Autowired
-    private FuncionarioDAO dao;
-
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
