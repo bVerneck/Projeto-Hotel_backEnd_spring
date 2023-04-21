@@ -4,6 +4,7 @@ import br.com.tex.hotel.model.entitys.Funcionario;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author willian
@@ -34,5 +35,12 @@ public class FuncionarioOutputDTO {
         this.salario=funcionario.getSalario();
         this.idContato=funcionario.getContato().getId();
         this.idEndereco=funcionario.getEndereco().getId();
+    }
+
+    public List<FuncionarioOutputDTO> lista(List<Funcionario> funcionarios){
+        return funcionarios
+                .stream()
+                .map(f -> new FuncionarioOutputDTO(f))
+                .toList();
     }
 }

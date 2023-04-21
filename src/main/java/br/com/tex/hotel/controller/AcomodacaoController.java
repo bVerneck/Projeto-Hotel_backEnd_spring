@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/acomodacoes")
@@ -39,26 +40,35 @@ public class AcomodacaoController {
     @Transactional
     @PutMapping
     public ResponseEntity alterar(@RequestBody AcomodacaoInputAlterarDTO dto) {
-        this.acomodacaoRepository.save(dto.toEntityAcomodacao(this.acomodacaoRepository.findById(dto.getId()).get()));
+        Optional<Acomodacao> acomodacao = this.acomodacaoRepository.findById(dto.getId());
+
+        this.acomodacaoRepository.save(dto.toEntityAcomodacao(acomodacao.get()));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
     }
 
     @Transactional
     @DeleteMapping("/{id}")
-    public String excluir(@PathVariable Integer id) {
+    public ResponseEntity excluir(@PathVariable Integer id) {
+        Optional<Acomodacao> acomodacaoOptional = this.acomodacaoRepository.findById(id);
+
         this.acomodacaoRepository.deleteById(id);
-        return "Quarto excluído com sucesso!";
+        return ResponseEntity.ok(acomodacaoOptional.get());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(new AcomodacaoOutputDTO(this.acomodacaoRepository.findById(id).get()));
+        Optional<Acomodacao> acomodacaoOptional = this.acomodacaoRepository.findById(id);
+
+        return ResponseEntity.ok(new AcomodacaoOutputDTO(acomodacaoOptional.get()));
     }
 
     @GetMapping
-    public List<AcomodacaoOutputDTO> lista() {
-        return new AcomodacaoOutputDTO().lista(this.acomodacaoRepository.findAll());
+    public ResponseEntity lista() {
+        List<Acomodacao> acomodacoes = this.acomodacaoRepository.findAll();
+
+        if(acomodacoes.isEmpty())
+            return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(new AcomodacaoOutputDTO().lista(acomodacoes));
     }
 }

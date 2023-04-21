@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author willian
@@ -27,16 +28,22 @@ public class EnderecoController {
 
     @GetMapping
     public ResponseEntity lista(){
+        List<Endereco> enderecos = this.enderecoRespository.findAll();
+        if(enderecos.isEmpty())
+            return ResponseEntity.noContent().build();
+
         return ResponseEntity
                 .ok()
-                .body(new EnderecoOutputDTO().lista(this.enderecoRespository.findAll()));
+                .body(new EnderecoOutputDTO().lista(enderecos));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id){
+        Optional<Endereco> endereco = this.enderecoRespository.findById(id);
+
         return ResponseEntity
                 .ok()
-                .body(new EnderecoOutputDTO(this.enderecoRespository.findById(id).get()));
+                .body(new EnderecoOutputDTO(endereco.get()));
     }
 
     @GetMapping("/estados")
@@ -68,6 +75,8 @@ public class EnderecoController {
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity alterar(@PathVariable Integer id, EnderecoInputDTO dto){
+        Optional<Endereco> enderecoOptional = this.enderecoRespository.findById(id);
+
         Endereco endereco = dto.toEntityEndereco();
         endereco.setId(id);
         endereco = this.enderecoRespository.save(endereco);
@@ -78,7 +87,8 @@ public class EnderecoController {
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable Integer id){
+        Optional<Endereco> enderecoOptional = this.enderecoRespository.findById(id);
         this.enderecoRespository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new EnderecoOutputDTO(enderecoOptional.get()));
     }
 }
