@@ -62,7 +62,7 @@ public class EnderecoController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity salvar(EnderecoInputDTO dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity salvar(@RequestBody EnderecoInputDTO dto, UriComponentsBuilder uriBuilder) {
         var enderecoSalvo = this.enderecoRespository.save(dto.toEntityEndereco());
 
         return ResponseEntity
@@ -72,7 +72,7 @@ public class EnderecoController {
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity alterar(@PathVariable Integer id, EnderecoInputDTO dto) {
+    public ResponseEntity alterar(@PathVariable Integer id, @RequestBody EnderecoInputDTO dto) {
         var endereco = this.enderecoRespository.getReferenceById(id);
 
         endereco = dto.toEntityEndereco();
