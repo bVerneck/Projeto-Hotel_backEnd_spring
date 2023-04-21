@@ -34,9 +34,9 @@ public class ContatoController {
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-        Optional<Contato> contatoOptional = this.contatoRepository.findById(id);
+        Contato contato = this.contatoRepository.getReferenceById(id);
 
-        return ResponseEntity.ok(new ContatoOutputDTO(contatoOptional.get()));
+        return ResponseEntity.ok(new ContatoOutputDTO(contato));
     }
 
     @Transactional
