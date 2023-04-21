@@ -2,16 +2,12 @@ package br.com.tex.hotel.controller;
 
 import br.com.tex.hotel.model.dto.contato.ContatoInputDTO;
 import br.com.tex.hotel.model.dto.contato.ContatoOutputDTO;
-import br.com.tex.hotel.model.entitys.Contato;
 import br.com.tex.hotel.repository.ContatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author willian
@@ -25,7 +21,7 @@ public class ContatoController {
 
     @GetMapping
     public ResponseEntity lista() {
-        List<Contato> contatos = contatoRepository.findAll();
+        var contatos = contatoRepository.findAll();
         if (contatos.isEmpty())
             return ResponseEntity.noContent().build();
 
@@ -34,14 +30,14 @@ public class ContatoController {
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-        Contato contato = this.contatoRepository.getReferenceById(id);
+        var contato = this.contatoRepository.getReferenceById(id);
         return ResponseEntity.ok(new ContatoOutputDTO(contato));
     }
 
     @Transactional
     @PostMapping
     public ResponseEntity salvar(@RequestBody ContatoInputDTO contatoDTO, UriComponentsBuilder uriBuilder) {
-        Contato contatoSalvo = this.contatoRepository.save(contatoDTO.toEntityContato());
+        var contatoSalvo = this.contatoRepository.save(contatoDTO.toEntityContato());
 
         return ResponseEntity
                 .created(uriBuilder.path("/contatos/{id}").buildAndExpand(contatoSalvo.getId()).toUri())
@@ -51,7 +47,8 @@ public class ContatoController {
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity alterar(@PathVariable Integer id, @RequestBody ContatoInputDTO contatoDTO) {
-        Contato contato = contatoDTO.toEntityContato();
+        var contato = this.contatoRepository.getReferenceById(id);
+        contato = contatoDTO.toEntityContato();
         contato.setId(id);
 
         contato = this.contatoRepository.save(contato);
@@ -61,9 +58,9 @@ public class ContatoController {
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable Integer id) {
-        Optional<Contato> contatoOptional = this.contatoRepository.findById(id);
+        var contato = this.contatoRepository.getReferenceById(id);
 
-        this.contatoRepository.deleteById(id);
-        return ResponseEntity.ok(new ContatoOutputDTO(contatoOptional.get()));
+        this.contatoRepository.delete(contato);
+        return ResponseEntity.ok(new ContatoOutputDTO(contato));
     }
 }

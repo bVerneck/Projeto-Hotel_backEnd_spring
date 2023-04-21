@@ -3,15 +3,12 @@ package br.com.tex.hotel.controller;
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioInputAlterarDTO;
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioInputSalvarDTO;
 import br.com.tex.hotel.model.dto.funcionario.FuncionarioOutputDTO;
-import br.com.tex.hotel.model.entitys.Funcionario;
 import br.com.tex.hotel.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 /**
  * @author willian
@@ -25,7 +22,7 @@ public class FuncionarioController {
     @Transactional
     @PostMapping
     public ResponseEntity salvar(@RequestBody FuncionarioInputSalvarDTO dto, UriComponentsBuilder uriBuilder) {
-        Funcionario funcionario = this.funcionarioRepository.save(dto.toEntityFuncionario());
+        var funcionario = this.funcionarioRepository.save(dto.toEntityFuncionario());
         return ResponseEntity
                 .created(uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri())
                 .body(new FuncionarioOutputDTO(funcionario));
@@ -34,31 +31,29 @@ public class FuncionarioController {
     @Transactional
     @PutMapping
     public ResponseEntity alterar(@RequestBody FuncionarioInputAlterarDTO dto) {
-        Funcionario funcionario = this.funcionarioRepository
+        var funcionario = this.funcionarioRepository
                 .save(dto.toEntityFuncionario(this.funcionarioRepository.getReferenceById(dto.getId())));
         return ResponseEntity.ok(new FuncionarioOutputDTO(funcionario));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Integer id) {
-        Funcionario funcionario = this.funcionarioRepository.findById(id).get();
-
-        return ResponseEntity.ok(new FuncionarioOutputDTO(funcionario));
+        return ResponseEntity.ok(new FuncionarioOutputDTO(this.funcionarioRepository.getReferenceById(id)));
     }
 
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable Integer id){
-        Funcionario funcionario = this.funcionarioRepository.getReferenceById(id);
+    public ResponseEntity excluir(@PathVariable Integer id) {
+        var funcionario = this.funcionarioRepository.getReferenceById(id);
         this.funcionarioRepository.delete(funcionario);
         return ResponseEntity.ok(new FuncionarioOutputDTO(funcionario));
     }
 
     @GetMapping
     public ResponseEntity lista() {
-        List<Funcionario> funcionarios = this.funcionarioRepository.findAll();
+        var funcionarios = this.funcionarioRepository.findAll();
 
-        if(funcionarios.isEmpty())
+        if (funcionarios.isEmpty())
             return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(new FuncionarioOutputDTO().lista(funcionarios));

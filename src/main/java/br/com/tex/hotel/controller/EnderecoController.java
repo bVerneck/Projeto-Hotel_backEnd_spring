@@ -4,7 +4,6 @@ import br.com.tex.hotel.enums.Estado;
 import br.com.tex.hotel.enums.TipoLogradouro;
 import br.com.tex.hotel.model.dto.endereco.EnderecoInputDTO;
 import br.com.tex.hotel.model.dto.endereco.EnderecoOutputDTO;
-import br.com.tex.hotel.model.entitys.Endereco;
 import br.com.tex.hotel.repository.EnderecoRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author willian
@@ -27,9 +25,9 @@ public class EnderecoController {
     private EnderecoRespository enderecoRespository;
 
     @GetMapping
-    public ResponseEntity lista(){
-        List<Endereco> enderecos = this.enderecoRespository.findAll();
-        if(enderecos.isEmpty())
+    public ResponseEntity lista() {
+        var enderecos = this.enderecoRespository.findAll();
+        if (enderecos.isEmpty())
             return ResponseEntity.noContent().build();
 
         return ResponseEntity
@@ -38,16 +36,16 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable Integer id){
-        Optional<Endereco> endereco = this.enderecoRespository.findById(id);
+    public ResponseEntity getById(@PathVariable Integer id) {
+        var endereco = this.enderecoRespository.getReferenceById(id);
 
         return ResponseEntity
                 .ok()
-                .body(new EnderecoOutputDTO(endereco.get()));
+                .body(new EnderecoOutputDTO(endereco));
     }
 
     @GetMapping("/estados")
-    public List<String> estados(){
+    public List<String> estados() {
         return Arrays.asList(Estado.values())
                 .stream()
                 .map(e -> e.getNome())
@@ -55,7 +53,7 @@ public class EnderecoController {
     }
 
     @GetMapping("/tipoLogradouro")
-    public List<String> tipoLogradouro(){
+    public List<String> tipoLogradouro() {
         return Arrays.asList(TipoLogradouro.values())
                 .stream()
                 .map(t -> t.getDescricao())
@@ -64,8 +62,8 @@ public class EnderecoController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity salvar(EnderecoInputDTO dto, UriComponentsBuilder uriBuilder){
-        Endereco enderecoSalvo = this.enderecoRespository.save(dto.toEntityEndereco());
+    public ResponseEntity salvar(EnderecoInputDTO dto, UriComponentsBuilder uriBuilder) {
+        var enderecoSalvo = this.enderecoRespository.save(dto.toEntityEndereco());
 
         return ResponseEntity
                 .created(uriBuilder.path("/{id}").buildAndExpand(enderecoSalvo.getId()).toUri())
@@ -74,10 +72,10 @@ public class EnderecoController {
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity alterar(@PathVariable Integer id, EnderecoInputDTO dto){
-        Optional<Endereco> enderecoOptional = this.enderecoRespository.findById(id);
+    public ResponseEntity alterar(@PathVariable Integer id, EnderecoInputDTO dto) {
+        var endereco = this.enderecoRespository.getReferenceById(id);
 
-        Endereco endereco = dto.toEntityEndereco();
+        endereco = dto.toEntityEndereco();
         endereco.setId(id);
         endereco = this.enderecoRespository.save(endereco);
 
@@ -86,9 +84,9 @@ public class EnderecoController {
 
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable Integer id){
-        Optional<Endereco> enderecoOptional = this.enderecoRespository.findById(id);
-        this.enderecoRespository.deleteById(id);
-        return ResponseEntity.ok(new EnderecoOutputDTO(enderecoOptional.get()));
+    public ResponseEntity excluir(@PathVariable Integer id) {
+        var endereco = this.enderecoRespository.getReferenceById(id);
+        this.enderecoRespository.delete(endereco);
+        return ResponseEntity.ok(new EnderecoOutputDTO(endereco));
     }
 }
