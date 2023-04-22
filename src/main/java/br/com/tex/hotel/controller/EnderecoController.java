@@ -75,8 +75,6 @@ public class EnderecoController {
     public ResponseEntity alterar(@PathVariable Integer id, @RequestBody EnderecoInputDTO dto) {
         var endereco = this.enderecoRespository.getReferenceById(id);
 
-        endereco = dto.toEntityEndereco();
-        endereco.setId(id);
         endereco = this.enderecoRespository.save(endereco);
 
         return ResponseEntity.ok(new EnderecoOutputDTO(endereco));
