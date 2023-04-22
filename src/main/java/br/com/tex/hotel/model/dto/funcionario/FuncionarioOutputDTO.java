@@ -23,9 +23,6 @@ public class FuncionarioOutputDTO {
     private String cpf;
     private LocalDate dataNascimento;
     private BigDecimal salario;
-    private Integer idContato;
-    private Integer idEndereco;
-
     public FuncionarioOutputDTO (Funcionario funcionario){
         this.id = funcionario.getId();
         this.matricula=funcionario.getMatricula();
@@ -33,8 +30,6 @@ public class FuncionarioOutputDTO {
         this.cpf = funcionario.getCpf();
         this.dataNascimento = funcionario.getDataNascimento();
         this.salario=funcionario.getSalario();
-        this.idContato=funcionario.getContato().getId();
-        this.idEndereco=funcionario.getEndereco().getId();
     }
 
     public List<FuncionarioOutputDTO> lista(List<Funcionario> funcionarios){
