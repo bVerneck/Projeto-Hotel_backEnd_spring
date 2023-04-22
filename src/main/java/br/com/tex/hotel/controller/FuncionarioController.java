@@ -41,8 +41,6 @@ public class FuncionarioController {
     @PutMapping("/{id}")
     public ResponseEntity alterar(@PathVariable Integer id, @RequestBody FuncionarioInputAlterarDTO dto) {
         var funcionario = this.funcionarioRepository.getReferenceById(id);
-        funcionario.setContato(this.contatoRepository.getReferenceById(dto.getIdContato()));
-        funcionario.setEndereco(this.enderecoRespository.getReferenceById(dto.getIdEndereco()));
         funcionario = this.funcionarioRepository
                 .save(dto.toEntityFuncionario(funcionario));
         return ResponseEntity.ok(new FuncionarioOutputDTO(funcionario));
