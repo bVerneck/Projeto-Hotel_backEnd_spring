@@ -1,23 +1,52 @@
 package br.com.tex.hotel.controller;
 
-import br.com.tex.hotel.dao.ClienteDAO;
+import br.com.tex.hotel.model.dto.cliente.ClienteInputSalvatDTO;
+import br.com.tex.hotel.model.dto.cliente.ClienteOutputDTO;
+import br.com.tex.hotel.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-@Controller
+@RestController
 @RequestMapping("/clientes")
 public class ClienteController {
     @Autowired
-    private ClienteDAO clienteDAO;
+    private ClienteRepository clienteRepository;
 
-    @GetMapping("/lista")
-    public String clientes(Model model){
-        model.addAttribute("list", clienteDAO.listAllCliente());
+    @PostMapping
+    @Transactional
+    public ResponseEntity salvar(@RequestBody ClienteInputSalvatDTO dto, UriComponentsBuilder uriBuilder) {
+        var clienteSalvo = this.clienteRepository.save(dto.toEntityCliente());
 
-        return "listCliente";
+        return ResponseEntity
+                .created(uriBuilder.path("/clientes/{id}").buildAndExpand(clienteSalvo.getId()).toUri())
+                .body(new ClienteOutputDTO(clienteSalvo));
     }
 
+    @GetMapping
+    public ResponseEntity lista() {
+        var clientes = this.clienteRepository.findAll();
+
+        if (clientes.isEmpty())
+            return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(new ClienteOutputDTO().lista(clientes));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getById(@PathVariable Integer id) {
+        var cliente = this.clienteRepository.getReferenceById(id);
+        return ResponseEntity.ok(new ClienteOutputDTO(cliente));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Integer id) {
+        var cliente = this.clienteRepository.getReferenceById(id);
+
+        this.clienteRepository.delete(cliente);
+        return ResponseEntity.ok(new ClienteOutputDTO(cliente));
+    }
 }

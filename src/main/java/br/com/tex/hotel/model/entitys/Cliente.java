@@ -1,110 +1,37 @@
 package br.com.tex.hotel.model.entitys;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.Objects;
 
 /**
- * 
  * @author willian
- *
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@Entity
+@Table(name="clientes")
 public class Cliente {
-	private Integer id;
-	private String nome;
-	private String cpf;
-	private LocalDate dataNascimento;
-	private Contato contato;
-	private Endereco endereco;
-	private List<Reserva> reservas;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String nome;
+    private String email;
+    private String senha;
 
-	public Cliente() {
-	}
-
-	public Cliente(String nome, String cpf, LocalDate dataNascimento, Contato contato, Endereco endereco) {
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.contato = contato;
-		this.endereco = endereco;
-	}
-
-	public Cliente(Integer id, String nome, String cpf, LocalDate dataNascimento, Contato contato, Endereco endereco) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.contato = contato;
-		this.endereco = endereco;
-	}
-
-	public void addReserva(Reserva reserva) {
-		if (this.reservas == null)
-			this.reservas = new ArrayList<>();
-
-		this.reservas.add(reserva);
-	}
-
-	public void removeReserva(Reserva reserva) {
-		if (this.reservas != null)
-			if (this.reservas.contains(reserva))
-				this.reservas.remove(reserva);
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public Contato getContato() {
-		return contato;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public List<Reserva> getReservas() {
-		return reservas;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Cliente cliente = (Cliente) o;
+		return Objects.equals(id, cliente.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpf);
+		return Objects.hash(id);
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(cpf, other.cpf);
-	}
-
-	@Override
-	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", dataNascimento=" + dataNascimento + "]";
-	}
-
 }
