@@ -1,4 +1,4 @@
-package br.com.tex.hotel.base;
+package br.com.tex.hotel.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
